@@ -55,7 +55,7 @@ class HomeController extends GetxController {
         color: color,
         alignment: Alignment.centerLeft,
         onPressed: (){
-          handleClearData();
+          //handleClearData();
           Get.back();
         }
     );
@@ -71,41 +71,76 @@ class HomeController extends GetxController {
   }
 
   bool handleWinner(int position, int index) {
-    var count1 = 1, count2 = 1, count3 = 1, count4 = 1;
+    var result = 0, count = position;
     final player = listData[position][index];
 
-    for (int i = 0; i < count.value; i++) {
-      final j = i == 0 ? 0 : i-1;
+    while(listData[count][index] == player){
+      result ++;
+      count++;
+    }
 
-      //Row cùng giá trị
-      if (listData[position][i] == player && listData[position][i] == listData[position][j]) count1++;
-
-      //Column cùng giá trị
-      if (listData[i][index] == player && listData[i][index] == listData[j][index]) count2++;
-
-      //Chéo từ trái sang phải cùng giá trị
-        for(int a = 0; a < count.value; a++){
-          final h = a == (count.value - 1) ? count.value - 1 : a+1;
-          final k = i == 0 ? a : h;
-          //Note: Hàng đầu tiên và cột cuối cùng đáp ứng điều kiện mà count3 = 1 --> count3 + 1
-          if (listData[i][k] == player && listData[i][k] == listData[j][h-1]){
-            count3++;
-            //Note: Do hàng đầu tiên và cột cuối cùng đáp ứng điều kiện --> count3 - 1
-            if(i == 0 || a == count.value - 1) count3 = count3 - 1;
-          }
-        }
-
-      //Chéo từ phải sang trái cùng giá trị
-      for(int b = 15; b < count.value && b >= 0; b--){
-        final h = b == 0 ? 0 : b - 1;
-        if (listData[i][h] == player && listData[i][h] == listData[j][h+1]){
-          count4++;
-          if(i == 0 || b == 0) count4 = count4 - 1;
-        }
+    if (position != 0) {
+      count = position - 1;
+      while (listData[count][index] == player) {
+        result++;
+        count--;
       }
     }
-    return [count1, count2, count3, count4].contains(5);
+
+    // for (int i = 0; i < count.value; i++) {
+    //   final j = i == 0 ? 0 : i-1;
+    //
+    //   //Row cùng giá trị
+    //   if (listData[position][i] == player && listData[position][i] == listData[position][j]) count1++;
+    //
+    //   //Column cùng giá trị
+    //   if (listData[i][index] == player && listData[i][index] == listData[j][index]) count2++;
+    //
+    //   //Chéo từ trái sang phải cùng giá trị
+    //     for(int a = 0; a < count.value; a++){
+    //       final h = a == (count.value - 1) ? count.value - 1 : a+1;
+    //       final k = i == 0 ? a : h;
+    //       //Note: Hàng đầu tiên và cột cuối cùng đáp ứng điều kiện mà count3 = 1 --> count3 + 1
+    //       if (listData[i][k] == player && listData[i][k] == listData[j][h-1]){
+    //         count3++;
+    //         //Note: Do hàng đầu tiên và cột cuối cùng đáp ứng điều kiện --> count3 - 1
+    //         if(i == 0 || a == count.value - 1) count3 = count3 - 1;
+    //       }
+    //     }
+    //
+    //   //Chéo từ phải sang trái cùng giá trị
+    //   for(int b = 15; b < count.value && b >= 0; b--){
+    //     final h = b == 0 ? 0 : b - 1;
+    //     if (listData[i][h] == player && listData[i][h] == listData[j][h+1]){
+    //       count4++;
+    //       if(i == 0 || b == 0) count4 = count4 - 1;
+    //     }
+    //   }
+    // }
+    return [result].contains(5);
   }
+
+  // bool handleWinner(int position, int index) {
+  //   int result = 0, k = position, h;
+  //   final player = listData[position][index];
+  //
+  //   // kiểm tra hàng
+  //   print("kOld: $k");
+  //   while (listData[k][index] == player) {
+  //     result++;
+  //     k++;
+  //   }
+  //   print("d1: $result");
+  //   k = position - 1;
+  //   while (listData[k][index] == player) {
+  //     result++;
+  //     k--;
+  //   }
+  //   print("d2: $result");
+  //   print("kNew: $k");
+  //   print("*----------*");
+  //   return [result].contains(5);
+  // }
 
   bool handleEnd() =>
       listData.every((values) => values.every((value) => value != ''));
