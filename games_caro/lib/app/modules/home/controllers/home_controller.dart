@@ -56,7 +56,7 @@ class HomeController extends GetxController {
         color: color,
         alignment: Alignment.centerLeft,
         onPressed: () {
-         // handleClearData();
+         handleClearData();
           Get.back();
         });
   }
