@@ -93,6 +93,7 @@ class HomeController extends GetxController {
         count1--;
       }
     }
+    if(result == 5) return true;
 
     //cột cùng giá trị
     result = 0;
@@ -113,6 +114,7 @@ class HomeController extends GetxController {
         count1--;
       }
     }
+    if(result == 5) return true;
 
     //Đường chéo trái cùng giá trị
     //note: hướng lọc giá trị tương tự phần cột
@@ -134,6 +136,7 @@ class HomeController extends GetxController {
       count1--;
       count2--;
     }
+    if(result == 5) return true;
 
     //Đường chéo phải cùng giá trị
     //note: hướng lọc giá trị tương tự phần cột
@@ -153,8 +156,9 @@ class HomeController extends GetxController {
       count1--;
       count2++;
     }
+    if(result == 5) return true;
 
-    return [result].contains(5);
+    return false;
   }
 
   bool handleEnd() =>
