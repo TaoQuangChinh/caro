@@ -10,7 +10,7 @@ class HomeController extends GetxController {
   final count = 16.obs;
   final changeValue = ''.obs;
   final isSuccess = ''.obs;
-  final listCount = <int>[0,0,0,0];
+  final listCount = <int>[0, 0, 0, 0];
 
   @override
   void onInit() {
@@ -41,7 +41,8 @@ class HomeController extends GetxController {
       getBoxColor(position, index);
 
       if (handleWinner(position, index)) {
-        showMessagePopup(getColorsBackGround, "Player ${changeValue.value} won!");
+        showMessagePopup(
+            getColorsBackGround, "Player ${changeValue.value} won!");
       } else if (handleEnd()) {
         showMessagePopup(Color(0xffffff9800), "The game is tied!!");
       }
@@ -49,16 +50,15 @@ class HomeController extends GetxController {
     }
   }
 
-  void showMessagePopup(Color color, String content){
+  void showMessagePopup(Color color, String content) {
     Utils.showMessage(
         text: content,
         color: color,
         alignment: Alignment.centerLeft,
-        onPressed: (){
-          //handleClearData();
+        onPressed: () {
+         // handleClearData();
           Get.back();
-        }
-    );
+        });
   }
 
   void getBoxColor(int position, int index) {
@@ -71,76 +71,91 @@ class HomeController extends GetxController {
   }
 
   bool handleWinner(int position, int index) {
-    var result = 0, count = position;
+    var result = 0, count1 = 0, count2 = 0;
     final player = listData[position][index];
+    final max = count.value - 1;
 
-    while(listData[count][index] == player){
-      result ++;
-      count++;
+    //hàng cùng giá trị
+    count1 = index;
+    //1.lọc giá trị từ trái sang phải
+    while (listData[position][count1] == player) {
+      result++;
+      if (count1 == max) break;
+      count1++;
     }
 
-    if (position != 0) {
-      count = position - 1;
-      while (listData[count][index] == player) {
+    //2.lọc giá trị từ phải sang trái
+    if (index != 0) {
+      count1 = index - 1;
+      while (listData[position][count1] == player) {
         result++;
-        count--;
+        if (count1 == 0) break;
+        count1--;
       }
     }
 
-    // for (int i = 0; i < count.value; i++) {
-    //   final j = i == 0 ? 0 : i-1;
-    //
-    //   //Row cùng giá trị
-    //   if (listData[position][i] == player && listData[position][i] == listData[position][j]) count1++;
-    //
-    //   //Column cùng giá trị
-    //   if (listData[i][index] == player && listData[i][index] == listData[j][index]) count2++;
-    //
-    //   //Chéo từ trái sang phải cùng giá trị
-    //     for(int a = 0; a < count.value; a++){
-    //       final h = a == (count.value - 1) ? count.value - 1 : a+1;
-    //       final k = i == 0 ? a : h;
-    //       //Note: Hàng đầu tiên và cột cuối cùng đáp ứng điều kiện mà count3 = 1 --> count3 + 1
-    //       if (listData[i][k] == player && listData[i][k] == listData[j][h-1]){
-    //         count3++;
-    //         //Note: Do hàng đầu tiên và cột cuối cùng đáp ứng điều kiện --> count3 - 1
-    //         if(i == 0 || a == count.value - 1) count3 = count3 - 1;
-    //       }
-    //     }
-    //
-    //   //Chéo từ phải sang trái cùng giá trị
-    //   for(int b = 15; b < count.value && b >= 0; b--){
-    //     final h = b == 0 ? 0 : b - 1;
-    //     if (listData[i][h] == player && listData[i][h] == listData[j][h+1]){
-    //       count4++;
-    //       if(i == 0 || b == 0) count4 = count4 - 1;
-    //     }
-    //   }
-    // }
+    //cột cùng giá trị
+    result = 0;
+    count1 = position;
+    //1.lọc giá trị từ trên xuống
+    while (listData[count1][index] == player) {
+      result++;
+      if (count1 == max) break;
+      count1++;
+    }
+
+    //2.lọc giá trị từ dưới lên
+    if (position != 0) {
+      count1 = position - 1;
+      while (listData[count1][index] == player) {
+        result++;
+        if (count1 == 0) break;
+        count1--;
+      }
+    }
+
+    //Đường chéo trái cùng giá trị
+    //note: hướng lọc giá trị tương tự phần cột
+    result = 0;
+    count1 = position;
+    count2 = index;
+    while (listData[count1][count2] == player) {
+      result++;
+      if (count1 == max || count2 == max) break;
+      count1++;
+      count2++;
+    }
+
+    if (position != 0) count1 = position - 1;
+    if (index != 0) count2 = index - 1;
+    while (listData[count1][count2] == player) {
+      result++;
+      if (count1 == 0 || count2 == 0) break;
+      count1--;
+      count2--;
+    }
+
+    //Đường chéo phải cùng giá trị
+    //note: hướng lọc giá trị tương tự phần cột
+    result = 0; count1 = position; count2 = index;
+    while(listData[count1][count2] == player){
+      result++;
+      if(count1 == max || count2 == 0) break;
+      count1++;
+      count2--;
+    }
+
+    if(position != 0)count1 = position - 1;
+    if(index != max)count2 = index + 1;
+    while(listData[count1][count2] == player){
+      result++;
+      if(count1 == 0|| count2 == max) break;
+      count1--;
+      count2++;
+    }
+
     return [result].contains(5);
   }
-
-  // bool handleWinner(int position, int index) {
-  //   int result = 0, k = position, h;
-  //   final player = listData[position][index];
-  //
-  //   // kiểm tra hàng
-  //   print("kOld: $k");
-  //   while (listData[k][index] == player) {
-  //     result++;
-  //     k++;
-  //   }
-  //   print("d1: $result");
-  //   k = position - 1;
-  //   while (listData[k][index] == player) {
-  //     result++;
-  //     k--;
-  //   }
-  //   print("d2: $result");
-  //   print("kNew: $k");
-  //   print("*----------*");
-  //   return [result].contains(5);
-  // }
 
   bool handleEnd() =>
       listData.every((values) => values.every((value) => value != ''));
