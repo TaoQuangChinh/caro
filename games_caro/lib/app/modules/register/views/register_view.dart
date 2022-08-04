@@ -1,23 +1,19 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:games_caro/app/common/api.dart';
-import 'package:games_caro/app/routes/app_pages.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/login_controller.dart';
+import '../controllers/register_controller.dart';
 
-class LoginView extends GetView<LoginController> {
-  const LoginView({Key? key}) : super(key: key);
+class RegisterView extends GetView<RegisterController> {
+  const RegisterView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('LoginView'),
+        title: const Text('RegisterView'),
         centerTitle: true,
       ),
-      body: GetX<LoginController>(builder: (_) {
+      body: GetX<RegisterController>(builder: (_) {
         if (_.isLoading.value) {
           return Center(child: CircularProgressIndicator());
         }
@@ -28,6 +24,9 @@ class LoginView extends GetView<LoginController> {
             ),
             TextField(
               controller: controller.inputPass,
+            ),
+            TextField(
+              controller: controller.inputNameGame,
             ),
             ElevatedButton(
                 onPressed: () async => await _.submit(), child: Text("SUBMIT"))

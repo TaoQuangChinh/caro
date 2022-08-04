@@ -13,9 +13,7 @@ class HomeView extends GetView<HomeController> {
         title: const Text('Games caro vip pro'),
         centerTitle: true,
       ),
-      body: SizedBox(
-          height: Get.height,
-          child: const Body()),
+      body: SizedBox(height: Get.height, child: const Body()),
     );
   }
 }

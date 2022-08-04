@@ -3,9 +3,10 @@ import 'package:games_caro/app/common/api.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
-class LoginController extends GetxController {
+class RegisterController extends GetxController {
   TextEditingController inputName = TextEditingController();
   TextEditingController inputPass = TextEditingController();
+  TextEditingController inputNameGame = TextEditingController();
 
   final isLoading = false.obs;
 
@@ -25,12 +26,16 @@ class LoginController extends GetxController {
   }
 
   Future<void> submit() async {
-    final form = {"name": inputName.text, "pass": inputPass.text};
+    final form = {
+      "name": inputName.text,
+      "pass": inputPass.text,
+      "name_game": inputNameGame.text
+    };
     isLoading.value = true;
-    final res = await ApiProvider().posts('/login', form);
+    final res = await ApiProvider().posts('/register', form);
     isLoading.value = false;
     if (res.status.hasError) {
-      Get.toNamed(Routes.HOME);
+      Get.toNamed(Routes.LOGIN);
     }
   }
 }
