@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:games_caro/app/common/api.dart';
-import 'package:games_caro/app/routes/app_pages.dart';
+import 'package:games_caro/app/common/primary_style.dart';
+import 'package:games_caro/app/utils/button_loading.dart';
+import 'package:games_caro/app/widget/custom_input.dart';
 
 import 'package:get/get.dart';
 
@@ -13,27 +12,33 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('LoginView'),
-        centerTitle: true,
-      ),
-      body: GetX<LoginController>(builder: (_) {
-        if (_.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return Column(
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            Image.asset('assets/images/logo_caro.png', height: 170),
+            const SizedBox(height: 40),
+            CustomInput(
               controller: controller.inputName,
+              title: 'Tài khoản email',
             ),
-            TextField(
+            const SizedBox(height: 15),
+            CustomInput(
               controller: controller.inputPass,
+              title: 'Mật khẩu',
             ),
-            ElevatedButton(
-                onPressed: () async => await _.submit(), child: Text("SUBMIT"))
+            const SizedBox(height: 40),
+            Obx(() => ButtonLoading(
+                height: 40,
+                width: 150,
+                style: PrimaryStyle.medium(16),
+                isLoading: controller.isLoading.value,
+                titleButton: "Đăng nhập",
+                onPressed: () async => await controller.submit()))
           ],
-        );
-      }),
+        ),
+      ),
     );
   }
 }

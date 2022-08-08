@@ -31,6 +31,8 @@ class LoginController extends GetxController {
     isLoading.value = false;
     if (res.status.hasError) {
       Get.toNamed(Routes.HOME);
+    } else {
+      isLoading.value = false;
     }
   }
 }
