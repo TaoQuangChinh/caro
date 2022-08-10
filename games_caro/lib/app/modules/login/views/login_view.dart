@@ -24,17 +24,17 @@ class LoginView extends GetView<LoginController> {
               Text("Login Games",
                   style: PrimaryStyle.bold(color: kPrimaryColor, 35)),
               const SizedBox(height: 40),
-              CustomInput(
-                controller: controller.inputEmail,
-                title: 'Tài khoản email',
-                err: '',
-              ),
+              Obx(() => CustomInput(
+                    controller: controller.inputEmail,
+                    title: 'Tài khoản email',
+                    err: controller.listErr[0],
+                  )),
               const SizedBox(height: 15),
-              CustomInput(
-                controller: controller.inputPass,
-                title: 'Mật khẩu',
-                err: '',
-              ),
+              Obx(() => CustomInput(
+                    controller: controller.inputPass,
+                    title: 'Mật khẩu',
+                    err: controller.listErr[1],
+                  )),
               const SizedBox(height: 40),
               Obx(() => ButtonLoading(
                   height: 40,

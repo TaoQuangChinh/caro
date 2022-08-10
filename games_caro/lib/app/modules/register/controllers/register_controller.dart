@@ -81,13 +81,18 @@ class RegisterController extends GetxController {
     };
     isLoading.value = true;
     final res = await Service().post('$kApi/register', form);
-    final body = jsonDecode(res.bodyString!);
     isLoading.value = false;
-    print(body['code']);
-    // if (res.status.hasError) {
-    //   Get.toNamed(Routes.LOGIN);
-    // } else {
-    //   isLoading.value = false;
-    // }
+    final body = jsonDecode(res.bodyString!);
+    if (res.statusCode == 200 && body['code'] == 0) {
+      clearData();
+      Get.toNamed(Routes.HOME);
+    } else {
+      print("Erro: ${body['message']}");
+    }
+  }
+
+  void clearData() {
+    inputEmail.clear();
+    inputNameGame.clear();
   }
 }
