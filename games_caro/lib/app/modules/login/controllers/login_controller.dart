@@ -4,7 +4,7 @@ import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  TextEditingController inputName = TextEditingController();
+  TextEditingController inputEmail = TextEditingController();
   TextEditingController inputPass = TextEditingController();
 
   final isLoading = false.obs;
@@ -25,7 +25,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> submit() async {
-    final form = {"name": inputName.text, "pass": inputPass.text};
+    final form = {"email": inputEmail.text, "pass": inputPass.text};
     isLoading.value = true;
     final res = await ApiProvider().posts('/login', form);
     isLoading.value = false;

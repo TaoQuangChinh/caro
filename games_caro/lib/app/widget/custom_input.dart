@@ -6,12 +6,13 @@ class CustomInput extends StatelessWidget {
   const CustomInput(
       {Key? key,
       required this.controller,
+      required this.err,
       this.title = '',
       this.colorTitle = kBodyText})
       : super(key: key);
 
   final TextEditingController controller;
-  final String title;
+  final String title, err;
   final Color colorTitle;
 
   @override
@@ -34,7 +35,8 @@ class CustomInput extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   borderSide:
                       const BorderSide(color: kPrimaryColor, width: 1.5))),
-        )
+        ),
+        if (err.isNotEmpty) ...[Text(err, style: PrimaryStyle.error)]
       ],
     );
   }
