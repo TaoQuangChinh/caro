@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:games_caro/app/common/api.dart';
-import 'package:games_caro/app/common/get_connect.dart';
+import 'package:games_caro/app/common/config.dart';
+import 'package:games_caro/app/common/service.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -16,12 +16,12 @@ class RegisterController extends GetxController {
   final uuid = Uuid();
 
   final listError = ["", ""].obs;
-  var modelInfo = '';
+  var _modelInfo = '';
   final DeviceInfoPlugin _device = DeviceInfoPlugin();
 
   @override
   void onInit() {
-    //initData();
+    initData();
     super.onInit();
   }
 
@@ -61,29 +61,27 @@ class RegisterController extends GetxController {
   void getModel() async {
     if (Platform.isAndroid) {
       AndroidDeviceInfo android = await _device.androidInfo;
-      print(android.model);
-      //modelInfo = "${android.model}";
+      //print(android.model);
+      _modelInfo = "${android.model}";
     } else if (Platform.isIOS) {
       IosDeviceInfo ios = await _device.iosInfo;
-      print(ios.utsname.machine);
-      //modelInfo = "${ios.model}";
+      //print(ios.utsname.machine);
+      _modelInfo = "${ios.model}";
     }
   }
 
   Future<void> submit() async {
-    //getModel();
     if (!validator()) return;
     final form = {
-      "id": uuid.v4(),
+      "id": _modelInfo,
       "email": inputEmail.text,
       "name_game": inputNameGame.text
     };
     isLoading.value = true;
-    final res = await Getconnects().pott("/register", form);
+    final res = await Service().post('$kApi/register', form);
     isLoading.value = false;
     if (res.status.hasError) {
-      print("success!!!");
-      //Get.toNamed(Routes.LOGIN);
+      Get.toNamed(Routes.LOGIN);
     } else {
       isLoading.value = false;
     }

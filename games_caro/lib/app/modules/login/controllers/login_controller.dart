@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:games_caro/app/common/api.dart';
+import 'package:games_caro/app/common/config.dart';
+import 'package:games_caro/app/common/service.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
@@ -27,10 +28,10 @@ class LoginController extends GetxController {
   Future<void> submit() async {
     final form = {"email": inputEmail.text, "pass": inputPass.text};
     isLoading.value = true;
-    final res = await ApiProvider().posts('/login', form);
+    final res = await Service().post('$kApi/login', form);
     isLoading.value = false;
     if (res.status.hasError) {
-      Get.toNamed(Routes.HOME);
+      //Get.toNamed(Routes.HOME);
     } else {
       isLoading.value = false;
     }
