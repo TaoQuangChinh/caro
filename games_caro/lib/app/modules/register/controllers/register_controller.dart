@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -73,17 +74,20 @@ class RegisterController extends GetxController {
   Future<void> submit() async {
     if (!validator()) return;
     final form = {
-      "id": _modelInfo,
+      "id": uuid.v4(),
       "email": inputEmail.text,
-      "name_game": inputNameGame.text
+      "name_game": inputNameGame.text,
+      "device_mobi": _modelInfo
     };
     isLoading.value = true;
     final res = await Service().post('$kApi/register', form);
+    final body = jsonDecode(res.bodyString!);
     isLoading.value = false;
-    if (res.status.hasError) {
-      Get.toNamed(Routes.LOGIN);
-    } else {
-      isLoading.value = false;
-    }
+    print(body['code']);
+    // if (res.status.hasError) {
+    //   Get.toNamed(Routes.LOGIN);
+    // } else {
+    //   isLoading.value = false;
+    // }
   }
 }
