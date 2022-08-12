@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/service.dart';
+import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -14,11 +15,12 @@ class RegisterController extends GetxController {
   TextEditingController inputNameGame = TextEditingController();
 
   final isLoading = false.obs;
-  final uuid = Uuid();
-
   final listError = ["", ""].obs;
   var _modelInfo = '';
+
   final DeviceInfoPlugin _device = DeviceInfoPlugin();
+  final uuid = Uuid();
+  final AuthController authController = Get.find();
 
   @override
   void onInit() {
@@ -80,12 +82,16 @@ class RegisterController extends GetxController {
       "device_mobi": _modelInfo
     };
     isLoading.value = true;
-    final res = await Service().post('$kApi/register', form);
+    final res = await Service().post('$kUrl/register', form);
     isLoading.value = false;
     final body = jsonDecode(res.bodyString!);
     if (res.statusCode == 200 && body['code'] == 0) {
       clearData();
-      Get.toNamed(Routes.HOME);
+      if (authController.authDevice.value == "null") {
+        Get.offNamed(Routes.HOME);
+      } else {
+        Get.toNamed(Routes.LOGIN);
+      }
     } else {
       print("Erro: ${body['message']}");
     }

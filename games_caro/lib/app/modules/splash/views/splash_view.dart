@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:games_caro/app/common/config.dart';
+import 'package:games_caro/app/common/primary_style.dart';
 
 import 'package:get/get.dart';
 
@@ -9,16 +11,18 @@ class SplashView extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SplashView'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          'SplashView is working',
-          style: TextStyle(fontSize: 20),
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+          alignment: Alignment.center,
+          child: RotationTransition(
+            turns: controller.animation,
+            child: Image.asset('assets/images/logo_caro.png'),
+          ),
         ),
-      ),
+        SizedBox(height: 30),
+        Text("Welcome to Vip Caro",
+            style: PrimaryStyle.bold(32, color: kPrimaryColor))
+      ]),
     );
   }
 }

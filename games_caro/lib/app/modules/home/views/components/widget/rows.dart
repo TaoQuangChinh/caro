@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/modules/home/controllers/home_controller.dart';
-import 'package:get/get.dart';
 
 class Rows extends StatelessWidget {
   const Rows({Key? key, required this.controller, required this.position})
@@ -25,13 +24,15 @@ class Rows extends StatelessWidget {
                     width: 50,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: controller.listColor[position][index],
-                      borderRadius: const BorderRadius.all(Radius.circular(6))
-                    ),
+                        color: controller.listColor[position][index],
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(6))),
                     child: Text(controller.listData[position][index],
                         textAlign: TextAlign.center,
-                        style:
-                            const TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.w500)),
+                        style: const TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500)),
                   ),
                 )));
   }

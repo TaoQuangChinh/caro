@@ -53,7 +53,7 @@ class LoginController extends GetxController {
     if (!validator) return;
     final form = {"email": inputEmail.text, "pass": inputPass.text};
     isLoading.value = true;
-    final res = await Service().post('$kApi/login', form);
+    final res = await Service().post('$kUrl/login', form);
     isLoading.value = false;
     final body = jsonDecode(res.bodyString!);
 
