@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:games_caro/app/common/api.dart';
 import 'package:games_caro/app/common/config.dart';
-import 'package:games_caro/app/common/service.dart';
 import 'package:games_caro/app/model/user_model.dart';
 import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
@@ -56,13 +55,11 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
 
   Future<void> checkDevice() async {
     final form = {"device_mobi": _device};
-    final res = await Service().get('$kUrl/check-device', query: form);
-    final body = jsonDecode(res.bodyString!);
-    print(body['payload']['mobi_device']);
-    if (res.statusCode == 200 && body['code'] == 0) {
-      authController.authDevice.value = "${body['payload']['mobi_device']}";
+    final res = await api.get('$kUrl/check-device', queryParameters: form);
+    if (res.statusCode == 200 && res.data['code'] == 0) {
+      authController.authDevice.value = "${res.data['payload']['deviceMobi']}";
       if (authController.authDevice.value != "null") {
-        authController.user.value = UserModel.fromJson(body['payload']);
+        authController.user.value = UserModel.fromJson(res.data['payload']);
         Get.offNamed(Routes.LIST_ACCOUNT);
       } else {
         Get.offNamed(Routes.REGISTER);

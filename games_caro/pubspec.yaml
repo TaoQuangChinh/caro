@@ -13,6 +13,11 @@ dependencies:
   cross_scroll:
   uuid:
   device_info_plus:
+  dio:
+  image_picker:
+  firebase_core:
+  firebase_storage:
+  logging:
 
 dev_dependencies: 
   flutter_lints: 2.0.1

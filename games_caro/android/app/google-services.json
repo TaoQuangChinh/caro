@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "685963371970",
+    "project_id": "app-caro-776ce",
+    "storage_bucket": "app-caro-776ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685963371970:android:d382cc2e8f95c05a85a25b",
+        "android_client_info": {
+          "package_name": "com.saisystem.games_caro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685963371970-kubhv1alfmgel1l38tfteqhkthpqcqoq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTbln_Na2AE9l91ONsg72EBbytmghuhpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685963371970-kubhv1alfmgel1l38tfteqhkthpqcqoq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

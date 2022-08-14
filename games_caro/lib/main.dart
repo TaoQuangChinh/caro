@@ -1,14 +1,25 @@
 import 'dart:ui';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
 
 import 'package:get/get.dart';
+import 'package:logging/logging.dart';
 
 import 'app/routes/app_pages.dart';
 
-void main() {
+final _log = Logger('main.dart');
+
+void main() async {
+  // runZonedGuarded(() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
+  // }, (err, stackTrace) {
+  //   _log.severe("App Error: $err");
+  //   _log.severe("StackTrace: $stackTrace");
+  // });
 }
 
 class MyApp extends StatelessWidget {

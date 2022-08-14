@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:games_caro/app/common/api.dart';
 import 'package:games_caro/app/common/config.dart';
-import 'package:games_caro/app/common/service.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
@@ -53,16 +53,14 @@ class LoginController extends GetxController {
     if (!validator) return;
     final form = {"email": inputEmail.text, "pass": inputPass.text};
     isLoading.value = true;
-    final res = await Service().post('$kUrl/login', form);
+    final res = await api.post('$kUrl/login', data: form);
     isLoading.value = false;
-    final body = jsonDecode(res.bodyString!);
 
-    if (res.statusCode == 200 && body['code'] == 0) {
-      print("data: ${body['payload']}");
+    if (res.statusCode == 200 && res.data['code'] == 0) {
       clearData();
       Get.toNamed(Routes.HOME);
     } else {
-      print(body['message']);
+      print(res.data['message']);
     }
   }
 
