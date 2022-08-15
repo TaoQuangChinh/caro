@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
@@ -63,8 +65,43 @@ class ListAccountView extends GetView<ListAccountController> {
                               top: getPadding([index, 0])),
                           child: Row(
                             children: [
-                              Image.asset('assets/images/logo_caro.png',
-                                  height: 50, width: 50),
+                              if (_.listAccount[index].images == null) ...[
+                                SizedBox(
+                                  height: 50,
+                                  width: 50,
+                                  child: CircleAvatar(
+                                    backgroundColor: kBlackColor900,
+                                    radius: 80,
+                                    child: Text(
+                                        _.listAccount[index].nameGame![0]
+                                            .toUpperCase(),
+                                        style: PrimaryStyle.bold(20,
+                                            color: Colors.white)),
+                                  ),
+                                )
+                              ],
+                              if (_.listAccount[index].images != null) ...[
+                                CachedNetworkImage(
+                                  imageUrl: _.listAccount[index].images!,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 50.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      CupertinoActivityIndicator(
+                                          color: kIndigoBlueColor900,
+                                          radius: 16),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                )
+                              ],
                               const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

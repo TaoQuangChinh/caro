@@ -5,11 +5,15 @@ import 'package:get/get.dart';
 
 class BodyBottomSheet extends StatelessWidget {
   const BodyBottomSheet(
-      {Key? key, required this.pickerImage, required this.imageCamera})
+      {Key? key,
+      required this.pickerImage,
+      required this.imageCamera,
+      required this.removeAvatar})
       : super(key: key);
 
   final Function()? pickerImage;
   final Function()? imageCamera;
+  final Function()? removeAvatar;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,22 @@ class BodyBottomSheet extends StatelessWidget {
                 const SizedBox(width: 10),
                 Text('Chụp ảnh',
                     style: PrimaryStyle.normal(16, color: kIndigoBlueColor900))
+              ],
+            ),
+          ),
+        ),
+        const Divider(thickness: 1, color: kIndigoBlueColor900, height: 0),
+        InkWell(
+          onTap: removeAvatar,
+          child: Container(
+            width: Get.width,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Row(
+              children: [
+                const Icon(Icons.highlight_remove, color: kRedColor400),
+                const SizedBox(width: 10),
+                Text('Xoá avatar',
+                    style: PrimaryStyle.normal(16, color: kRedColor400))
               ],
             ),
           ),

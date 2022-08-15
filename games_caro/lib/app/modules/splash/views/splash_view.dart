@@ -19,8 +19,9 @@ class SplashView extends GetView<SplashController> {
             child: Image.asset('assets/images/logo_caro.png'),
           ),
         ),
-        SizedBox(height: 30),
-        Text("Welcome to Vip Caro",
+        const SizedBox(height: 30),
+        Text("Chào mừng đến với Caro Master",
+            textAlign: TextAlign.center,
             style: PrimaryStyle.bold(32, color: kPrimaryColor))
       ]),
     );

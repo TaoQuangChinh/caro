@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:games_caro/app/common/api.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/model/user_model.dart';
@@ -34,7 +32,7 @@ class ListAccountController extends GetxController {
       final convertList = res.data['payload'] as List;
       listAccount.value =
           convertList.map((data) => UserModel.fromJson(data)).toList();
+      update();
     }
-    update();
   }
 }

@@ -17,6 +17,7 @@ class RegisterController extends GetxController {
   TextEditingController inputEmail = TextEditingController();
   TextEditingController inputNameGame = TextEditingController();
 
+  final isLoadImage = false.obs;
   final isLoading = false.obs;
   final listError = ["", ""].obs;
   var _modelInfo = '';
@@ -24,7 +25,6 @@ class RegisterController extends GetxController {
   final DeviceInfoPlugin _device = DeviceInfoPlugin();
   final uuid = Uuid();
   final fileImage = File("").obs;
-  late FirebaseStorage _storage;
   final AuthController authController = Get.find();
 
   @override
@@ -46,7 +46,6 @@ class RegisterController extends GetxController {
   }
 
   void initData() {
-    _storage = FirebaseStorage.instance;
     getModel();
   }
 
@@ -85,38 +84,34 @@ class RegisterController extends GetxController {
 
   Future<void> submit() async {
     if (!validator()) return;
-    final form = <String, dynamic>{
-      "id": uuid.v4(),
-      "email": inputEmail.text,
-      "nameGame": inputNameGame.text,
-      "deviceMobi": _modelInfo
-    };
+    final uui = uuid.v4();
     isLoading.value = true;
-    final res = await api.post('$kUrl/register', data: form);
-    isLoading.value = false;
-    if (res.statusCode == 200 && res.data['code'] == 0) {
-      clearData();
-      Get.toNamed(Routes.LOGIN);
+    if (fileImage.value.path != '') {
+      await handleAddImageToStore(uui);
     } else {
-      print("Erro: ${res.data['message']}");
+      await registerAccount(uui);
     }
-    update();
   }
 
   void clearData() {
     inputEmail.clear();
     inputNameGame.clear();
+    fileImage.value = File('');
     update();
   }
 
   Future<void> showModalSheet() async {
     showModalBottomSheet(
         context: Get.context!,
-        constraints: const BoxConstraints(maxHeight: 103),
+        constraints: const BoxConstraints(maxHeight: 148),
         builder: (context) {
           return BodyBottomSheet(
               imageCamera: () => handlePickerImage(ImageSource.camera),
-              pickerImage: () => handlePickerImage(ImageSource.gallery));
+              pickerImage: () => handlePickerImage(ImageSource.gallery),
+              removeAvatar: () {
+                Get.back();
+                if (fileImage.value.path != '') fileImage.value = File('');
+              });
         });
   }
 
@@ -126,7 +121,6 @@ class RegisterController extends GetxController {
       final image = await ImagePicker().pickImage(source: source);
       if (image != null) {
         fileImage.value = File(image.path);
-        await handleAddImageToStore();
       }
       update();
     } on PlatformException catch (err) {
@@ -145,15 +139,38 @@ class RegisterController extends GetxController {
     update();
   }
 
-  Future<void> handleAddImageToStore() async {
-    Reference ref = await _storage
+  Future<void> handleAddImageToStore(id) async {
+    Reference ref = authController.storage
         .refFromURL('gs://app-caro-776ce.appspot.com/')
-        .child('user');
+        .child(id);
     UploadTask task = ref.putFile(fileImage.value);
     task.then((snapshot) {
-      snapshot.ref.getDownloadURL().then((value) => print("dowload: $value"));
+      snapshot.ref
+          .getDownloadURL()
+          .then((value) async => await registerAccount(id, urlImage: value));
     }).catchError((err) {
+      print("Có một lỗi xảy ra trong quá trình lưu file.");
       print("Storage: $err");
+      isLoading.value = false;
     });
+  }
+
+  Future<void> registerAccount(id, {String urlImage = ''}) async {
+    final form = {
+      "id": id,
+      "email": inputEmail.text,
+      "nameGame": inputNameGame.text,
+      "deviceMobi": _modelInfo,
+      "images": urlImage
+    };
+    final res = await api.post('$kUrl/register', data: form);
+    isLoading.value = false;
+    if (res.statusCode == 200 && res.data['code'] == 0) {
+      clearData();
+      Get.toNamed(Routes.LOGIN);
+    } else {
+      print("Erro: ${res.data['message']}");
+    }
+    update();
   }
 }
