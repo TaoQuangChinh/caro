@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/model/player.dart';
+import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/utils.dart';
@@ -11,6 +12,7 @@ class HomeController extends GetxController {
   final changeValue = ''.obs;
   final isSuccess = ''.obs;
   final listCount = <int>[0, 0, 0, 0];
+  final AuthController authController = Get.find();
 
   @override
   void onInit() {
@@ -30,6 +32,7 @@ class HomeController extends GetxController {
 
   void initData() {
     handleClearData();
+    print("email_123: ${authController.user.value.email}");
     update();
   }
 
@@ -56,7 +59,7 @@ class HomeController extends GetxController {
         color: color,
         alignment: Alignment.centerLeft,
         onPressed: () {
-         handleClearData();
+          handleClearData();
           Get.back();
         });
   }
@@ -93,7 +96,7 @@ class HomeController extends GetxController {
         count1--;
       }
     }
-    if(result == 5) return true;
+    if (result == 5) return true;
 
     //cột cùng giá trị
     result = 0;
@@ -114,7 +117,7 @@ class HomeController extends GetxController {
         count1--;
       }
     }
-    if(result == 5) return true;
+    if (result == 5) return true;
 
     //Đường chéo trái cùng giá trị
     //note: hướng lọc giá trị tương tự phần cột
@@ -136,27 +139,29 @@ class HomeController extends GetxController {
       count1--;
       count2--;
     }
-    if(result == 5) return true;
+    if (result == 5) return true;
 
     //Đường chéo phải cùng giá trị
     //note: hướng lọc giá trị tương tự phần cột
-    result = 0; count1 = position; count2 = index;
-    while(listData[count1][count2] == player){
+    result = 0;
+    count1 = position;
+    count2 = index;
+    while (listData[count1][count2] == player) {
       result++;
-      if(count1 == max || count2 == 0) break;
+      if (count1 == max || count2 == 0) break;
       count1++;
       count2--;
     }
 
-    if(position != 0)count1 = position - 1;
-    if(index != max)count2 = index + 1;
-    while(listData[count1][count2] == player){
+    if (position != 0) count1 = position - 1;
+    if (index != max) count2 = index + 1;
+    while (listData[count1][count2] == player) {
       result++;
-      if(count1 == 0|| count2 == max) break;
+      if (count1 == 0 || count2 == max) break;
       count1--;
       count2++;
     }
-    if(result == 5) return true;
+    if (result == 5) return true;
 
     return false;
   }

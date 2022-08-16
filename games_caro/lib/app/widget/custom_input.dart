@@ -36,7 +36,12 @@ class CustomInput extends StatelessWidget {
                   borderSide:
                       const BorderSide(color: kPrimaryColor, width: 1.5))),
         ),
-        if (err.isNotEmpty) ...[Text(err, style: PrimaryStyle.error)]
+        if (err.isNotEmpty) ...[
+          Padding(
+            padding: const EdgeInsets.only(top: 5, left: 10),
+            child: Text(err, style: PrimaryStyle.error),
+          )
+        ]
       ],
     );
   }

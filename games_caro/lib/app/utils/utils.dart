@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:games_caro/app/model/player.dart';
+import 'package:games_caro/app/common/config.dart';
+import 'package:games_caro/app/common/primary_style.dart';
 import 'package:get/get.dart';
 
 class Utils {
-
   static void showMessage(
       {Color color = Colors.white,
-        int duration = 0,
-        String text = "",
-        AlignmentGeometry alignment = Alignment.center,
-        TextAlign textAlign = TextAlign.center,
-        Function()? onPressed}) {
+      int duration = 0,
+      String text = "",
+      AlignmentGeometry alignment = Alignment.center,
+      TextAlign textAlign = TextAlign.center,
+      Function()? onPressed}) {
     showDialog(
         context: Get.context!,
         barrierDismissible: false,
@@ -20,7 +20,10 @@ class Utils {
               Align(
                 alignment: alignment,
                 child: Text(text,
-                    style: const TextStyle(fontSize: 20,color: Colors.white, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                     textAlign: textAlign),
               ),
               if (duration == 0) ...[
@@ -30,19 +33,17 @@ class Utils {
                   padding: const EdgeInsets.only(right: 15),
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        fixedSize: const Size(100, 45),
-                        side: const BorderSide(color: Colors.white, width: 2)
-                      ),
-                      child: const Text("OK",style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white
-                      )),
-                      onPressed: onPressed),
+                          fixedSize: const Size(100, 45),
+                          side:
+                              const BorderSide(color: Colors.white, width: 2)),
+                      onPressed: onPressed,
+                      child: const Text("OK",
+                          style: TextStyle(fontSize: 14, color: Colors.white))),
                 )
               ]
             ]),
             titlePadding:
-            const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             content: SizedBox(width: Get.width),
             contentPadding: EdgeInsets.zero,
             actionsPadding: EdgeInsets.zero,
@@ -59,5 +60,20 @@ class Utils {
         Get.back();
       });
     }
+  }
+
+  static void showDialogDefault({required Widget body, Function()? onPressed}) {
+    showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            content: body,
+            contentPadding:
+                const EdgeInsets.only(bottom: 5, top: 23, left: 20, right: 20),
+            actionsPadding: EdgeInsets.zero,
+          );
+        });
   }
 }

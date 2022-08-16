@@ -49,7 +49,26 @@ class BodyRegister extends StatelessWidget {
                 isLoading: controller.isLoading.value,
                 titleButton: "Đăng ký",
                 onPressed: () async => await controller.submit())),
-            const SizedBox(height: 20)
+            const SizedBox(height: 30),
+            if (Get.parameters['isHide'] == 'true') ...[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: TextButton(
+                      onPressed: () => Get.back(),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.arrow_back_ios,
+                              color: kPrimaryColor, size: 15),
+                          Text('Đăng nhập',
+                              style:
+                                  PrimaryStyle.normal(15, color: kPrimaryColor))
+                        ],
+                      )),
+                ),
+              )
+            ]
           ],
         ),
       ),

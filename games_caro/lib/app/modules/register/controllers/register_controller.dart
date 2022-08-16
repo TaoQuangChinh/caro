@@ -102,6 +102,9 @@ class RegisterController extends GetxController {
 
   Future<void> showModalSheet() async {
     showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         context: Get.context!,
         constraints: const BoxConstraints(maxHeight: 148),
         builder: (context) {

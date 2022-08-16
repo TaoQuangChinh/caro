@@ -15,7 +15,8 @@ class UserModel {
       this.pass,
       this.nameGame,
       this.deviceMobi,
-      this.images});
+      this.images,
+      this.saveAccount});
 
   String? id;
   String? email;
@@ -23,6 +24,7 @@ class UserModel {
   String? nameGame;
   String? deviceMobi;
   String? images;
+  String? saveAccount;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
       id: json["id"] == null ? null : json["id"],
@@ -32,7 +34,8 @@ class UserModel {
       deviceMobi: json["deviceMobi"] == null ? null : json["deviceMobi"],
       images: json["images"] == null || json["images"] == ''
           ? null
-          : json["images"]);
+          : json["images"],
+      saveAccount: json["saveAccount"] == null ? null : json["saveAccount"]);
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
@@ -40,6 +43,7 @@ class UserModel {
         "pass": pass == null ? null : pass,
         "nameGame": nameGame == null ? null : nameGame,
         "deviceMobi": deviceMobi == null ? null : deviceMobi,
-        "images": images == null ? null : images
+        "images": images == null ? null : images,
+        "saveAccount": saveAccount == null ? null : saveAccount
       };
 }

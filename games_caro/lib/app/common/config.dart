@@ -8,3 +8,4 @@ const kRedColor400 = Color(0xFFef5350);
 const kGreyColor400 = Color(0xffBDBDBD);
 const kIndigoBlueColor900 = Color(0xff344585);
 const kBlackColor900 = Color(0xff212121);
+const kWhiteColor = Color(0xffffffff);
