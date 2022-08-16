@@ -30,34 +30,37 @@ class ChangePassView extends StatelessWidget {
         ]),
       );
     }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomInput(
-            title: 'Mật khẩu mới',
-            controller: controller[0],
-            err: textError[0]),
-        const SizedBox(height: 17),
-        CustomInput(
-            title: 'Xác nhận mật khẩu',
-            controller: controller[1],
-            err: textError[1]),
-        const SizedBox(height: 25),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-                onPressed: () => Get.back(),
-                child: Text('Huỷ',
-                    style:
-                        PrimaryStyle.medium(18, color: kIndigoBlueColor900))),
-            TextButton(
-                onPressed: submit,
-                child: Text('Thay đổi',
-                    style: PrimaryStyle.medium(18, color: kIndigoBlueColor900)))
-          ],
-        )
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomInput(
+              title: 'Mật khẩu mới',
+              controller: controller[0],
+              err: textError[0]),
+          const SizedBox(height: 17),
+          CustomInput(
+              title: 'Xác nhận mật khẩu',
+              controller: controller[1],
+              err: textError[1]),
+          const SizedBox(height: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                  onPressed: () => Get.back(),
+                  child: Text('Huỷ',
+                      style:
+                          PrimaryStyle.medium(18, color: kIndigoBlueColor900))),
+              TextButton(
+                  onPressed: submit,
+                  child: Text('Thay đổi',
+                      style:
+                          PrimaryStyle.medium(18, color: kIndigoBlueColor900)))
+            ],
+          )
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:games_caro/app/modules/splash/splash_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/auth/auth_binding.dart';
@@ -9,8 +10,6 @@ import '../modules/login/views/list_account_view.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
-import '../modules/splash/bindings/splash_binding.dart';
-import '../modules/splash/views/splash_view.dart';
 
 part 'app_routes.dart';
 
@@ -23,28 +22,22 @@ class AppPages {
     GetPage(
         name: _Paths.HOME,
         page: () => const HomeView(),
-        binding: HomeBinding(),
-        bindings: [AuthBinding()]),
+        binding: HomeBinding()),
     GetPage(
         name: _Paths.LOGIN,
         page: () => const LoginView(),
-        binding: LoginBinding(),
-        bindings: [AuthBinding()]),
+        binding: LoginBinding()),
     GetPage(
-      name: _Paths.REGISTER,
-      page: () => const RegisterView(),
-      binding: RegisterBinding(),
-      bindings: [AuthBinding()],
-    ),
+        name: _Paths.REGISTER,
+        page: () => const RegisterView(),
+        binding: RegisterBinding()),
     GetPage(
         name: _Paths.SPLASH,
         page: () => const SplashView(),
-        binding: SplashBinding(),
-        bindings: [AuthBinding()]),
+        binding: AuthBinding()),
     GetPage(
         name: _Paths.LIST_ACCOUNT,
         page: () => const ListAccountView(),
-        binding: ListAccountBinding(),
-        bindings: [AuthBinding()]),
+        binding: ListAccountBinding()),
   ];
 }

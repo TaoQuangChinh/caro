@@ -170,7 +170,7 @@ class RegisterController extends GetxController {
     isLoading.value = false;
     if (res.statusCode == 200 && res.data['code'] == 0) {
       clearData();
-      Get.toNamed(Routes.LOGIN);
+      Get.offNamed(Routes.LOGIN);
     } else {
       print("Erro: ${res.data['message']}");
     }
