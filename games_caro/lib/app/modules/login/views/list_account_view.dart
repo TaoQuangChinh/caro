@@ -18,7 +18,7 @@ class ListAccountView extends GetView<ListAccountController> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: kIndigoBlueColor900,
         onPressed: () =>
-            Get.toNamed(Routes.REGISTER, parameters: {'isHide': 'true'}),
+            Get.toNamed(Routes.REGISTER, parameters: {'screen': 'listAccount'}),
         child: const Icon(Icons.edit, color: kWhiteColor, size: 27),
       ),
     );

@@ -53,11 +53,17 @@ class AuthController extends GetxController {
     final form = {"device_mobi": _device};
     final res = await api.get('$kUrl/check-device', queryParameters: form);
     if (res.statusCode == 200 && res.data['code'] == 0) {
-      final deviceResult = "${res.data['payload']['deviceMobi']}";
-      if (deviceResult != "null") {
+      final totalDevice = res.data['payload']['total_device_login'];
+      final dataUser = res.data['payload']['data_user'];
+      if (![0, 1].contains(totalDevice)) {
         Get.offNamed(Routes.LIST_ACCOUNT);
       } else {
-        Get.offNamed(Routes.REGISTER);
+        if (totalDevice == 1) user.value = UserModel.fromJson(dataUser);
+        if (totalDevice == 1 && user.value.saveAccount == '1') {
+          Get.offNamed(Routes.HOME);
+        } else {
+          Get.offNamed(Routes.LOGIN);
+        }
       }
     }
   }

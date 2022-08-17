@@ -7,11 +7,15 @@ import 'package:get/get.dart';
 
 class BodyBottomSheet extends StatelessWidget {
   const BodyBottomSheet(
-      {Key? key, required this.removeAccount, required this.user})
+      {Key? key,
+      required this.removeAccount,
+      required this.user,
+      required this.changePass})
       : super(key: key);
 
   final UserModel user;
   final Function()? removeAccount;
+  final Function()? changePass;
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +28,17 @@ class BodyBottomSheet extends StatelessWidget {
             paddingVertical: 10,
             onTap: () {
               Get.back();
-              Get.toNamed(Routes.LOGIN, parameters: {
-                "email": user.email!,
-                'screen': 'listAccount',
-                'isHide': 'true'
-              });
+              Get.toNamed(Routes.LOGIN,
+                  parameters: {"email": user.email!, 'screen': 'listAccount'});
             }),
         ItemBottomSheet(
             content: 'Quên mật khẩu',
             icon: Icons.pin_rounded,
-            onTap: () {},
+            onTap: changePass,
             paddingVertical: 10),
         ItemBottomSheet(
             content: 'Xoá tài khoản(trên thiết bị này)',
-            icon: Icons.remove_circle,
+            icon: Icons.highlight_remove,
             textColor: kRedColor400,
             iconColor: kRedColor400,
             paddingVertical: 10,

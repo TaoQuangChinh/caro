@@ -62,17 +62,25 @@ class Utils {
     }
   }
 
-  static void showDialogDefault({required Widget body, Function()? onPressed}) {
+  static void showMessPopup({required String content, Function()? onPressed}) {
     showDialog(
         context: Get.context!,
         builder: (context) {
           return AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            content: body,
+            content: Text(content,
+                style: PrimaryStyle.medium(20, color: kIndigoBlueColor900)),
             contentPadding:
                 const EdgeInsets.only(bottom: 5, top: 23, left: 20, right: 20),
-            actionsPadding: EdgeInsets.zero,
+            actions: [
+              TextButton(
+                  onPressed: () => Get.back(),
+                  child: Text(
+                    'Xác nhận',
+                    style: PrimaryStyle.medium(18, color: kIndigoBlueColor900),
+                  ))
+            ],
           );
         });
   }

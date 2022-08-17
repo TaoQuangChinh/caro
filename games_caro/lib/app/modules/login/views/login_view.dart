@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
+import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:games_caro/app/utils/button_loading.dart';
 import 'package:games_caro/app/widget/custom_input.dart';
 
@@ -21,7 +22,7 @@ class LoginView extends GetView<LoginController> {
               const SizedBox(height: 50),
               Image.asset('assets/images/logo_caro.png', height: 170),
               const SizedBox(height: 10),
-              Text("Login Games",
+              Text("Caro Master",
                   style: PrimaryStyle.bold(color: kPrimaryColor, 35)),
               const SizedBox(height: 40),
               Obx(() => CustomInput(
@@ -69,28 +70,42 @@ class LoginView extends GetView<LoginController> {
                   titleButton: "Đăng nhập",
                   onPressed: () async => await controller.submit())),
               const SizedBox(height: 22),
-              if (Get.parameters['isHide'] == 'true') ...[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: TextButton(
-                        onPressed: () => Get.back(),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.arrow_back_ios,
-                                color: kPrimaryColor, size: 15),
-                            Text('Tài khoản khác',
-                                style: PrimaryStyle.normal(15,
-                                    color: kPrimaryColor))
-                          ],
-                        )),
-                  ),
-                )
-              ]
+              if (['listAccount', 'register']
+                  .contains(Get.parameters['screen'])) ...[
+                button('Đổi tài khoản', () => Get.back(),
+                    iconLeft: Icons.arrow_back_ios)
+              ] else ...[
+                button('Đăng ký tài khoản', () => Get.toNamed(Routes.REGISTER),
+                    iconRight: Icons.arrow_forward_ios)
+              ],
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget button(String content, Function()? onPressed,
+      {IconData? iconLeft, IconData? iconRight}) {
+    return Align(
+      alignment:
+          iconLeft != null ? Alignment.centerLeft : Alignment.centerRight,
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: TextButton(
+            onPressed: onPressed,
+            child: Row(
+              children: [
+                if (iconLeft != null) ...[
+                  Icon(iconLeft, color: kPrimaryColor, size: 15)
+                ],
+                Text(content,
+                    style: PrimaryStyle.normal(15, color: kPrimaryColor)),
+                if (iconRight != null) ...[
+                  Icon(iconRight, color: kPrimaryColor, size: 15)
+                ]
+              ],
+            )),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:games_caro/app/common/api.dart';
@@ -20,16 +19,13 @@ class RegisterController extends GetxController {
   final isLoadImage = false.obs;
   final isLoading = false.obs;
   final listError = ["", ""].obs;
-  var _modelInfo = '';
 
-  final DeviceInfoPlugin _device = DeviceInfoPlugin();
   final uuid = Uuid();
   final fileImage = File("").obs;
   final AuthController authController = Get.find();
 
   @override
   void onInit() {
-    initData();
     super.onInit();
   }
 
@@ -43,10 +39,6 @@ class RegisterController extends GetxController {
     inputEmail.dispose();
     inputNameGame.dispose();
     super.onClose();
-  }
-
-  void initData() {
-    getModel();
   }
 
   bool validator() {
@@ -68,18 +60,6 @@ class RegisterController extends GetxController {
     }
     update();
     return result;
-  }
-
-  void getModel() async {
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo android = await _device.androidInfo;
-      //print(android.model);
-      _modelInfo = "${android.model}";
-    } else if (Platform.isIOS) {
-      IosDeviceInfo ios = await _device.iosInfo;
-      //print(ios.utsname.machine);
-      _modelInfo = "${ios.model}";
-    }
   }
 
   Future<void> submit() async {
@@ -163,14 +143,15 @@ class RegisterController extends GetxController {
       "id": id,
       "email": inputEmail.text,
       "nameGame": inputNameGame.text,
-      "deviceMobi": _modelInfo,
       "images": urlImage
     };
     final res = await api.post('$kUrl/register', data: form);
     isLoading.value = false;
     if (res.statusCode == 200 && res.data['code'] == 0) {
       clearData();
-      Get.offNamed(Routes.LOGIN);
+      if (Get.parameters['screen'] == 'listAccount') {
+        Get.offNamed(Routes.LOGIN, parameters: {'screen': 'register'});
+      }
     } else {
       print("Erro: ${res.data['message']}");
     }
