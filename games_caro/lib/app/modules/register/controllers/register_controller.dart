@@ -8,8 +8,10 @@ import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:games_caro/app/modules/register/views/body/body_bottom_sheet.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
+import 'package:games_caro/app/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
 class RegisterController extends GetxController {
@@ -20,6 +22,7 @@ class RegisterController extends GetxController {
   final isLoading = false.obs;
   final listError = ["", ""].obs;
 
+  final _log = Logger();
   final uuid = Uuid();
   final fileImage = File("").obs;
   final AuthController authController = Get.find();
@@ -63,14 +66,15 @@ class RegisterController extends GetxController {
   }
 
   Future<void> submit() async {
-    if (!validator()) return;
-    final uui = uuid.v4();
-    isLoading.value = true;
-    if (fileImage.value.path != '') {
-      await handleAddImageToStore(uui);
-    } else {
-      await registerAccount(uui);
-    }
+    // if (!validator()) return;
+    // final uui = uuid.v4();
+    // isLoading.value = true;
+    // if (fileImage.value.path != '') {
+    //   await handleAddImageToStore(uui);
+    // } else {
+    //   await registerAccount(uui);
+    // }
+    _log.d(MSG_LOG.replaceFirst("@", 'abc', 6));
   }
 
   void clearData() {
@@ -107,7 +111,8 @@ class RegisterController extends GetxController {
       }
       update();
     } on PlatformException catch (err) {
-      print('Image error: $err');
+      //_log.severe("<**Image Picker: $err**>");
+      Utils.messWarning(MSG_SYSTEM_HANDLE);
     }
   }
 
@@ -117,7 +122,9 @@ class RegisterController extends GetxController {
     if (res.file != null) {
       fileImage.value = File(res.file!.path);
     } else {
-      print(res.exception!.code);
+      //_log.severe(
+      //    "<**Image Picker(retrieveLostData): ${res.exception!.code}**>");
+      Utils.messWarning(MSG_SYSTEM_HANDLE);
     }
     update();
   }
@@ -132,9 +139,9 @@ class RegisterController extends GetxController {
           .getDownloadURL()
           .then((value) async => await registerAccount(id, urlImage: value));
     }).catchError((err) {
-      print("Có một lỗi xảy ra trong quá trình lưu file.");
-      print("Storage: $err");
       isLoading.value = false;
+      //_log.severe('<**Fire Store: $err**>');
+      Utils.messWarning(MSG_SAVE_FILE);
     });
   }
 
@@ -151,9 +158,11 @@ class RegisterController extends GetxController {
       clearData();
       if (Get.parameters['screen'] == 'listAccount') {
         Get.offNamed(Routes.LOGIN, parameters: {'screen': 'register'});
+        return;
       }
+      Utils.messSuccess(res.data['message']);
     } else {
-      print("Erro: ${res.data['message']}");
+      Utils.messError(res.data['message']);
     }
     update();
   }

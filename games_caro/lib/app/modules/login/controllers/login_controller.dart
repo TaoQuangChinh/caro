@@ -1,12 +1,10 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/api.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/model/user_model.dart';
 import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
+import 'package:games_caro/app/utils/utils.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
@@ -16,10 +14,8 @@ class LoginController extends GetxController {
   final isLoadingLogin = false.obs;
   final listErrLogin = ["", ""].obs;
   final isSaveAccount = false.obs;
-  var _modelInfo = '';
 
   final AuthController authController = Get.find();
-  final DeviceInfoPlugin _device = DeviceInfoPlugin();
 
   @override
   void onInit() {
@@ -41,7 +37,6 @@ class LoginController extends GetxController {
     if (Get.parameters['screen'] == 'listAccount') {
       inputEmail.text = '${Get.parameters['email']}';
     }
-    await getModel();
   }
 
   bool get validatorLogin {
@@ -64,36 +59,29 @@ class LoginController extends GetxController {
     return result;
   }
 
-  Future<void> getModel() async {
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo android = await _device.androidInfo;
-      //print(android.model);
-      _modelInfo = "${android.model}";
-    } else if (Platform.isIOS) {
-      IosDeviceInfo ios = await _device.iosInfo;
-      //print(ios.utsname.machine);
-      _modelInfo = "${ios.model}";
-    }
-  }
-
   Future<void> submit() async {
     if (!validatorLogin) return;
-    final form = {
-      "email": inputEmail.text,
-      "pass": inputPass.text,
-      "save_acc": isSaveAccount.value,
-      "device_mobi": _modelInfo
-    };
-    isLoadingLogin.value = true;
-    final res = await api.post('$kUrl/login', data: form);
-    isLoadingLogin.value = false;
 
-    if (res.statusCode == 200 && res.data['code'] == 0) {
-      authController.user.value = UserModel.fromJson(res.data['payload']);
-      Get.offAllNamed(Routes.HOME);
-    } else {
-      print(res.data['message']);
-    }
+    await Utils.getDevice().then((value) async {
+      final form = {
+        "email": inputEmail.text,
+        "pass": inputPass.text,
+        "save_acc": isSaveAccount.value,
+        "device_mobi": value
+      };
+      isLoadingLogin.value = true;
+      final res = await api.post('$kUrl/login', data: form);
+      isLoadingLogin.value = false;
+
+      if (res.statusCode == 200 && res.data['code'] == 0) {
+        authController.user.value = UserModel.fromJson(res.data['payload']);
+        Get.offAllNamed(Routes.HOME);
+      } else {
+        Utils.messError(res.data['message']);
+      }
+    }).catchError((err) {
+      Utils.messWarning(MSG_ERR_ADMIN);
+    });
   }
 
   void clearDataLogin() {

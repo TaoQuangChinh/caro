@@ -8,24 +8,28 @@ class CustomInput extends StatelessWidget {
       required this.controller,
       required this.err,
       this.title = '',
-      this.colorTitle = kBodyText})
+      this.colorTitle = kBodyText,
+      this.maxLength})
       : super(key: key);
 
   final TextEditingController controller;
   final String title, err;
   final Color colorTitle;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: PrimaryStyle.medium(18, color: colorTitle)),
+        Text(title, style: PrimaryStyle.medium(14, color: colorTitle)),
         const SizedBox(height: 5),
         TextField(
           controller: controller,
-          style: PrimaryStyle.medium(color: kBodyText, 16),
+          style: PrimaryStyle.normal(color: kBodyText, 16),
+          maxLength: maxLength,
           decoration: InputDecoration(
+              counter: const SizedBox.shrink(),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
               border: OutlineInputBorder(
@@ -39,7 +43,8 @@ class CustomInput extends StatelessWidget {
         if (err.isNotEmpty) ...[
           Padding(
             padding: const EdgeInsets.only(top: 5, left: 10),
-            child: Text(err, style: PrimaryStyle.error),
+            child:
+                Text(err, style: PrimaryStyle.normal(13, color: kRedColor400)),
           )
         ]
       ],

@@ -26,7 +26,7 @@ class BodyListAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ListAccountController>(builder: (_) {
+    return GetX<ListAccountController>(builder: (_) {
       if (_.isLoading.value) {
         return const Center(
             child: Align(

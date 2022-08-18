@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
+import 'package:games_caro/app/widget/button/primary_button.dart';
 
 class ButtonLoading extends StatelessWidget {
   const ButtonLoading(
@@ -9,28 +10,35 @@ class ButtonLoading extends StatelessWidget {
       required this.onPressed,
       this.height = 10,
       this.width = 10,
-      this.style})
+      this.sizeContent = 16,
+      this.colors = kPrimaryColor})
       : super(key: key);
 
   final bool isLoading;
   final String titleButton;
   final Function()? onPressed;
   final double height, width;
-  final TextStyle? style;
+  final double sizeContent;
+  final Color? colors;
 
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(
-          child: CircularProgressIndicator(color: kPrimaryColor));
+      return Center(child: CircularProgressIndicator(color: colors));
     }
     return SizedBox(
       height: height,
       width: width,
-      child: ElevatedButton(
-          style: ElevatedButton.styleFrom(primary: kPrimaryColor),
-          onPressed: onPressed,
-          child: Text(titleButton, style: style)),
+      child: PrimaryButton(
+          sizeContent: sizeContent,
+          colors: colors,
+          content: titleButton,
+          onPressed: onPressed),
     );
+  }
+
+  Widget abc() {
+    return PrimaryButton(
+        colors: kPrimaryColor, content: titleButton, onPressed: onPressed);
   }
 }

@@ -52,7 +52,6 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
   }
 
   void initData() async {
-    await authController.getDevice();
     await authController.checkDevice();
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
@@ -5,9 +8,9 @@ import 'package:get/get.dart';
 
 class Utils {
   static void showMessage(
-      {Color color = Colors.white,
+      {required Color color,
+      required String text,
       int duration = 0,
-      String text = "",
       AlignmentGeometry alignment = Alignment.center,
       TextAlign textAlign = TextAlign.center,
       Function()? onPressed}) {
@@ -21,7 +24,7 @@ class Utils {
                 alignment: alignment,
                 child: Text(text,
                     style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 17,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                     textAlign: textAlign),
@@ -62,26 +65,71 @@ class Utils {
     }
   }
 
+  static void messWarning(String content) {
+    showMessage(
+        onPressed: () => Get.back(),
+        alignment: Alignment.centerLeft,
+        textAlign: TextAlign.left,
+        color: kYellowColor800,
+        text: content);
+  }
+
+  static void messError(String content) {
+    showMessage(
+        onPressed: () => Get.back(),
+        alignment: Alignment.centerLeft,
+        textAlign: TextAlign.left,
+        color: kRedColor600,
+        text: content);
+  }
+
+  static void messSuccess(String content) {
+    showMessage(
+        duration: 1500,
+        alignment: Alignment.centerLeft,
+        textAlign: TextAlign.left,
+        color: kGreenColor700,
+        text: content);
+  }
+
   static void showMessPopup({required String content, Function()? onPressed}) {
     showDialog(
         context: Get.context!,
         builder: (context) {
           return AlertDialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: Text(content,
-                style: PrimaryStyle.medium(20, color: kIndigoBlueColor900)),
+                style: PrimaryStyle.medium(16, color: kIndigoBlueColor900)),
             contentPadding:
                 const EdgeInsets.only(bottom: 5, top: 23, left: 20, right: 20),
             actions: [
               TextButton(
                   onPressed: () => Get.back(),
                   child: Text(
-                    'Xác nhận',
-                    style: PrimaryStyle.medium(18, color: kIndigoBlueColor900),
+                    'HUỶ',
+                    style: PrimaryStyle.medium(14, color: kIndigoBlueColor900),
+                  )),
+              TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'XÁC NHẬN',
+                    style: PrimaryStyle.medium(14, color: kIndigoBlueColor900),
                   ))
             ],
           );
         });
+  }
+
+  static Future<String> getDevice() async {
+    final DeviceInfoPlugin _device = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo android = await _device.androidInfo;
+      return "${android.model}";
+    } else if (Platform.isIOS) {
+      IosDeviceInfo ios = await _device.iosInfo;
+      return "${ios.model}";
+    }
+    return 'Zzz...';
   }
 }

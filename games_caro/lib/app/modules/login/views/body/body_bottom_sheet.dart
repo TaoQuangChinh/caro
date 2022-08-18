@@ -42,7 +42,7 @@ class BodyBottomSheet extends StatelessWidget {
             textColor: kRedColor400,
             iconColor: kRedColor400,
             paddingVertical: 10,
-            onTap: () {})
+            onTap: removeAccount)
       ],
     );
   }

@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
 
 import 'package:get/get.dart';
-import 'package:logging/logging.dart';
 
 import 'app/routes/app_pages.dart';
-
-final _log = Logger('main.dart');
 
 void main() async {
   // runZonedGuarded(() async {

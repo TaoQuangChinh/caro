@@ -17,7 +17,7 @@ dependencies:
   image_picker:
   firebase_core:
   firebase_storage:
-  logging:
+  logger:
   cached_network_image:
 
 dev_dependencies: 

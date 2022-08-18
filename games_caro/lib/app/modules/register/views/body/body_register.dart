@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
 import 'package:games_caro/app/modules/register/controllers/register_controller.dart';
-import 'package:games_caro/app/utils/button_loading.dart';
+import 'package:games_caro/app/widget/button/button_loading.dart';
 import 'package:games_caro/app/widget/custom_input.dart';
 import 'package:get/get.dart';
 
@@ -45,7 +45,6 @@ class BodyRegister extends StatelessWidget {
             Obx(() => ButtonLoading(
                 height: 40,
                 width: 150,
-                style: PrimaryStyle.medium(16),
                 isLoading: controller.isLoading.value,
                 titleButton: "Đăng ký",
                 onPressed: () async => await controller.submit())),
