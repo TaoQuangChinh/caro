@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/api.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/modules/change_pass/views/change_pass_screen.dart';
+import 'package:games_caro/app/utils/utils.dart';
 import 'package:get/get.dart';
 
 class ChangePassController extends GetxController {
@@ -16,6 +17,8 @@ class ChangePassController extends GetxController {
   final loadingSendCode = false.obs;
   final loadingChange = false.obs;
   final listErrChange = ["", ""].obs;
+  final reg =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
   @override
   void onInit() {
@@ -48,14 +51,17 @@ class ChangePassController extends GetxController {
   bool get validatorChange {
     var result = true;
     listErrChange.value = ["", ""];
-    if (inputPassNew.text.isEmpty) {
+    if (inputPassNew.text.trim().isEmpty) {
       listErrChange[0] = 'thông tin không được để trống';
       result = false;
-    } else if (inputPassNew.text.length > 50) {
-      listErrChange[0] = 'mật khẩu không quá 50 ký tự';
+    } else if (inputPassNew.text.length > 100) {
+      listErrChange[0] = 'mật khẩu không quá 100 ký tự';
+      result = false;
+    } else if (!reg.hasMatch(inputPassNew.text)) {
+      Utils.messWarning(MSG_FORMAT_PASS);
       result = false;
     }
-    if (inputConfirmPass.text.isEmpty) {
+    if (inputConfirmPass.text.trim().isEmpty) {
       listErrChange[1] = 'thông tin không được để trống';
       result = false;
     } else if (inputConfirmPass.text != inputPassNew.text) {
@@ -73,11 +79,10 @@ class ChangePassController extends GetxController {
     final res = await api.post('$kUrl/send-code', data: form);
     loadingSendCode(false);
     if (res.statusCode == 200 && res.data['code'] == 0) {
-      print(res.data['payload']['verifi_code']);
       _code = res.data['payload']['verifi_code'];
-      print(res.data['message']);
+      Utils.messSuccess(res.data['message']);
     } else {
-      print(res.data['message']);
+      Utils.messError(res.data['message']);
     }
     update();
   }
@@ -90,24 +95,18 @@ class ChangePassController extends GetxController {
 
   void submitVerifiCode(String email) {
     if (!validator) return;
-    if (inputVerifiCode.text == _code) {
-      Get.back();
-      _email = email;
-      print(_code);
-      print(inputVerifiCode.text);
-      clearDataChange();
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)),
-              content: const ChangePassScreen(),
-            );
-          });
-    } else {
-      print('vui lòng nhập lại mã xác minh');
-    }
+    Get.back();
+    _email = email;
+    clearDataChange();
+    showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            content: const ChangePassScreen(),
+          );
+        });
   }
 
   Future<void> handleChangePass() async {
@@ -119,8 +118,9 @@ class ChangePassController extends GetxController {
 
     if (res.statusCode == 200 && res.data['code'] == 0) {
       Get.back();
+      Utils.messSuccess(res.data['message']);
     } else {
-      print('Err ${res.data['message']}');
+      Utils.messError(res.data['message']);
     }
     update();
   }

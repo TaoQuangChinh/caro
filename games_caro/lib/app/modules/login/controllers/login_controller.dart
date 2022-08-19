@@ -6,6 +6,7 @@ import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:games_caro/app/utils/utils.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class LoginController extends GetxController {
   TextEditingController inputEmail = TextEditingController();
@@ -15,6 +16,7 @@ class LoginController extends GetxController {
   final listErrLogin = ["", ""].obs;
   final isSaveAccount = false.obs;
 
+  final _log = Logger();
   final AuthController authController = Get.find();
 
   @override
@@ -42,14 +44,14 @@ class LoginController extends GetxController {
   bool get validatorLogin {
     var result = true;
     listErrLogin.value = ["", ""];
-    if (inputEmail.text.isEmpty) {
+    if (inputEmail.text.trim().isEmpty) {
       listErrLogin[0] = 'thông tin không được để trống';
       result = false;
     } else if (!inputEmail.text.isEmail) {
       listErrLogin[0] = 'email không đúng định dạng';
       result = false;
     }
-    if (inputPass.text.isEmpty) {
+    if (inputPass.text.trim().isEmpty) {
       listErrLogin[1] = 'mật khẩu không được để trống';
       result = false;
     } else if (inputPass.text.length > 50) {
@@ -80,6 +82,7 @@ class LoginController extends GetxController {
         Utils.messError(res.data['message']);
       }
     }).catchError((err) {
+      _log.e('Device: $err');
       Utils.messWarning(MSG_ERR_ADMIN);
     });
   }

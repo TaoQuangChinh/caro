@@ -55,12 +55,14 @@ class AuthController extends GetxController {
           if (totalDevice == 1 && user.value.saveAccount == '1') {
             Get.offNamed(Routes.HOME);
           } else {
-            Get.offNamed(Routes.REGISTER);
+            Get.offNamed(Routes.LOGIN);
           }
         }
+      } else {
+        Utils.messError(res.data['message']);
       }
     }).catchError((err) {
-      //_log.severe(MSG_LOG);
+      _log.e('Device: $err');
       Utils.messWarning(MSG_ERR_ADMIN);
     });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
 
@@ -9,13 +10,17 @@ class CustomInput extends StatelessWidget {
       required this.err,
       this.title = '',
       this.colorTitle = kBodyText,
-      this.maxLength})
+      this.maxLength,
+      this.inputFormatters,
+      this.keyboardType})
       : super(key: key);
 
   final TextEditingController controller;
   final String title, err;
   final Color colorTitle;
   final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +33,11 @@ class CustomInput extends StatelessWidget {
           controller: controller,
           style: PrimaryStyle.normal(color: kBodyText, 16),
           maxLength: maxLength,
+          inputFormatters: inputFormatters,
+          keyboardType: keyboardType ?? TextInputType.visiblePassword,
           decoration: InputDecoration(
               counter: const SizedBox.shrink(),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 15),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(width: 1)),
@@ -42,7 +48,7 @@ class CustomInput extends StatelessWidget {
         ),
         if (err.isNotEmpty) ...[
           Padding(
-            padding: const EdgeInsets.only(top: 5, left: 10),
+            padding: const EdgeInsets.only(left: 10),
             child:
                 Text(err, style: PrimaryStyle.normal(13, color: kRedColor400)),
           )

@@ -21,6 +21,8 @@ const MSG_ERR_ADMIN = 'Có một lỗi xảy ra, vui lòng liên hệ với admi
 const MSG_SYSTEM_HANDLE =
     'Lỗi trong quá trình xử lý hệ thống. Vui lòng khởi động lại ứng dụng...';
 const MSG_SAVE_FILE = 'Có một lỗi xảy ra trong quá trình lưu file.';
+const MSG_FORMAT_PASS =
+    'mật khẩu không đúng định dạng:\n- mật khẩu chứa ít nhất 1 chữ thường.\n- mật khẩu chứa ít nhất 1 chữ hoa.\n- mật khẩu chứ ít nhất 1 số.\n- mật khẩu chứa ít nhất 1 kí tự.';
 
 // config message log
 const MSG_LOG = '<***>@<***>';

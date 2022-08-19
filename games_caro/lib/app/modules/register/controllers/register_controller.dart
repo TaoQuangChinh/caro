@@ -21,6 +21,7 @@ class RegisterController extends GetxController {
   final isLoadImage = false.obs;
   final isLoading = false.obs;
   final listError = ["", ""].obs;
+  final reg = '[a-zA-Z0-9]';
 
   final _log = Logger();
   final uuid = Uuid();
@@ -50,14 +51,14 @@ class RegisterController extends GetxController {
     if (inputNameGame.text.trim().isEmpty) {
       listError[0] = "vui lòng không để trống thông tin";
       result = false;
-    } else if (inputNameGame.text.length > 10) {
-      listError[0] = "nick name không quá 10 ký tự";
+    } else if (inputNameGame.text.length > 100) {
+      listError[0] = "nick name không quá 100 ký tự";
       result = false;
     }
     if (inputEmail.text.trim().isEmpty) {
       listError[1] = "vui lòng không để trống thông tin";
       result = false;
-    } else if (!inputEmail.text.trim().isEmail) {
+    } else if (!inputEmail.text.isEmail) {
       listError[1] = "địa chỉ email không hợp lệ";
       result = false;
     }
@@ -66,15 +67,14 @@ class RegisterController extends GetxController {
   }
 
   Future<void> submit() async {
-    // if (!validator()) return;
-    // final uui = uuid.v4();
-    // isLoading.value = true;
-    // if (fileImage.value.path != '') {
-    //   await handleAddImageToStore(uui);
-    // } else {
-    //   await registerAccount(uui);
-    // }
-    _log.d(MSG_LOG.replaceFirst("@", 'abc', 6));
+    if (!validator()) return;
+    final uui = uuid.v4();
+    isLoading.value = true;
+    if (fileImage.value.path != '') {
+      await handleAddImageToStore(uui);
+    } else {
+      await registerAccount(uui);
+    }
   }
 
   void clearData() {
@@ -111,7 +111,7 @@ class RegisterController extends GetxController {
       }
       update();
     } on PlatformException catch (err) {
-      //_log.severe("<**Image Picker: $err**>");
+      _log.e("Image: $err");
       Utils.messWarning(MSG_SYSTEM_HANDLE);
     }
   }
@@ -122,8 +122,7 @@ class RegisterController extends GetxController {
     if (res.file != null) {
       fileImage.value = File(res.file!.path);
     } else {
-      //_log.severe(
-      //    "<**Image Picker(retrieveLostData): ${res.exception!.code}**>");
+      _log.e("Image(retrieveLostData): ${res.exception!.code}");
       Utils.messWarning(MSG_SYSTEM_HANDLE);
     }
     update();
@@ -140,7 +139,7 @@ class RegisterController extends GetxController {
           .then((value) async => await registerAccount(id, urlImage: value));
     }).catchError((err) {
       isLoading.value = false;
-      //_log.severe('<**Fire Store: $err**>');
+      _log.e('Fire Store: $err');
       Utils.messWarning(MSG_SAVE_FILE);
     });
   }

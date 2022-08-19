@@ -9,12 +9,14 @@ import 'package:games_caro/app/modules/login/views/body/body_bottom_sheet.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
 import 'package:games_caro/app/utils/utils.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class ListAccountController extends GetxController
     with GetTickerProviderStateMixin {
   final isLoading = false.obs;
   final listAccount = <UserModel>[].obs;
 
+  final _log = Logger();
   final AuthController authController = Get.find();
   final ChangePassController changePassController = Get.find();
   late final AnimationController _aniController =
@@ -60,6 +62,7 @@ class ListAccountController extends GetxController
         Utils.messError(res.data['message']);
       }
     }).catchError((err) {
+      _log.e('Device: $err');
       Utils.messWarning(MSG_ERR_ADMIN);
     });
   }

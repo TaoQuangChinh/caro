@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
 import 'package:games_caro/app/modules/register/controllers/register_controller.dart';
@@ -33,6 +34,9 @@ class BodyRegister extends StatelessWidget {
             Obx(() => CustomInput(
                   controller: controller.inputNameGame,
                   title: 'Tên người chơi',
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(controller.reg))
+                  ],
                   err: controller.listError[0],
                 )),
             const SizedBox(height: 15),
@@ -41,6 +45,10 @@ class BodyRegister extends StatelessWidget {
                   title: 'Tài khoản email',
                   err: controller.listError[1],
                 )),
+            const SizedBox(height: 15),
+            Text(
+                "Lưu ý: trường 'Tên người chơi' chỉ được nhập chữ thường, chữ hoa và số.",
+                style: PrimaryStyle.medium(12, color: kIndigoBlueColor900)),
             const SizedBox(height: 40),
             Obx(() => ButtonLoading(
                 height: 40,

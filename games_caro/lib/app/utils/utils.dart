@@ -7,6 +7,13 @@ import 'package:games_caro/app/common/primary_style.dart';
 import 'package:get/get.dart';
 
 class Utils {
+  static void handleUnfocus() {
+    FocusScopeNode focusNode = FocusScope.of(Get.context!);
+    if (!focusNode.hasPrimaryFocus && focusNode.hasFocus) {
+      FocusManager.instance.primaryFocus!.unfocus();
+    }
+  }
+
   static void showMessage(
       {required Color color,
       required String text,
@@ -86,7 +93,7 @@ class Utils {
   static void messSuccess(String content) {
     showMessage(
         duration: 1500,
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         textAlign: TextAlign.left,
         color: kGreenColor700,
         text: content);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
 import 'package:games_caro/app/modules/change_pass/controllers/change_pass_controller.dart';
@@ -21,6 +22,8 @@ class VerifiCodeScreen extends StatelessWidget {
               title: 'mã xác thực',
               controller: _.inputVerifiCode,
               maxLength: 6,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               err: ''),
           const SizedBox(height: 5),
           Align(
