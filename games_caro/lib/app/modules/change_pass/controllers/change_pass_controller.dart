@@ -76,7 +76,7 @@ class ChangePassController extends GetxController {
     final form = {'email': email};
 
     loadingSendCode(true);
-    final res = await api.post('$kUrl/send-code', data: form);
+    final res = await api.post('/send-code', data: form);
     loadingSendCode(false);
     if (res.statusCode == 200 && res.data['code'] == 0) {
       _code = res.data['payload']['verifi_code'];
@@ -113,7 +113,7 @@ class ChangePassController extends GetxController {
     if (!validatorChange) return;
     final form = {"email": _email, "pass_confirm": inputConfirmPass.text};
     loadingChange(true);
-    final res = await api.put('$kUrl/change-pass', data: form);
+    final res = await api.put('/change-pass', data: form);
     loadingChange(false);
 
     if (res.statusCode == 200 && res.data['code'] == 0) {

@@ -12,7 +12,10 @@ class CustomInput extends StatelessWidget {
       this.colorTitle = kBodyText,
       this.maxLength,
       this.inputFormatters,
-      this.keyboardType})
+      this.keyboardType,
+      this.obscureText = false,
+      this.onPressed,
+      this.icons})
       : super(key: key);
 
   final TextEditingController controller;
@@ -21,6 +24,9 @@ class CustomInput extends StatelessWidget {
   final int? maxLength;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  final bool obscureText;
+  final IconData? icons;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,9 @@ class CustomInput extends StatelessWidget {
           maxLength: maxLength,
           inputFormatters: inputFormatters,
           keyboardType: keyboardType ?? TextInputType.visiblePassword,
+          obscureText: obscureText,
           decoration: InputDecoration(
+              prefixIcon: IconButton(icon: Icon(icons), onPressed: onPressed),
               counter: const SizedBox.shrink(),
               contentPadding: const EdgeInsets.symmetric(horizontal: 15),
               border: OutlineInputBorder(

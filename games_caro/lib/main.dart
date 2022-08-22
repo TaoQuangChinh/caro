@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:games_caro/app/common/api.dart';
 import 'package:games_caro/app/common/config.dart';
+import 'package:games_caro/app/common/custom_interceptor.dart';
 import 'package:games_caro/app/utils/utils.dart';
 
 import 'package:get/get.dart';
@@ -17,6 +20,22 @@ void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
+
+    api.options
+      ..connectTimeout = 10000
+      ..validateStatus = (int? status) => status != null && status > 0;
+    api.interceptors.addAll([
+      CustomInterceptors(),
+      RetryInterceptor(
+          dio: api,
+          logPrint: print,
+          retryDelays: [
+            const Duration(seconds: 5),
+            const Duration(seconds: 10),
+            const Duration(seconds: 20)
+          ],
+          retries: 3)
+    ]);
     runApp(const MyApp());
   }, (err, stackTrace) {
     _log.e("App Error: $err");

@@ -19,6 +19,8 @@ dependencies:
   firebase_storage:
   logger:
   cached_network_image:
+  connectivity_plus:
+  dio_smart_retry:
 
 dev_dependencies: 
   flutter_lints: 2.0.1

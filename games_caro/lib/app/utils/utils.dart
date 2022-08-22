@@ -1,10 +1,14 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/common/primary_style.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class Utils {
   static void handleUnfocus() {
@@ -12,6 +16,25 @@ class Utils {
     if (!focusNode.hasPrimaryFocus && focusNode.hasFocus) {
       FocusManager.instance.primaryFocus!.unfocus();
     }
+  }
+
+  static Future<bool> handleListenConnect() async {
+    var result = true;
+    final _log = Logger();
+    StreamSubscription subscription;
+    // kiểm tra kết nối mạng khi bắt đầu vào app
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+      result = false;
+    }
+    // lắng nghe kết nối mạng bị thay đổi
+    subscription = Connectivity().onConnectivityChanged.listen((changeResult) {
+      if (changeResult == ConnectivityResult.none) {
+        result = false;
+      } else {
+        handleListenConnect();
+      }
+    });
+    return result;
   }
 
   static void showMessage(

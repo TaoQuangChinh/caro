@@ -34,6 +34,8 @@ class LoginView extends GetView<LoginController> {
               Obx(() => CustomInput(
                     controller: controller.inputPass,
                     title: 'Mật khẩu',
+                    obscureText: controller.isHidePass.value,
+                    icons: null,
                     err: controller.listErrLogin[1],
                   )),
               Row(

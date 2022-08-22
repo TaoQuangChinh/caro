@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:games_caro/app/model/player.dart';
 import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../../utils/utils.dart';
 
 class HomeController extends GetxController {
+  final AuthController authController = Get.find();
+  final _log = Logger();
+
   final listData = <List<String>>[].obs;
   final listColor = [].obs;
   final count = 16.obs;
   final changeValue = ''.obs;
   final isSuccess = ''.obs;
   final listCount = <int>[0, 0, 0, 0];
-  final AuthController authController = Get.find();
 
   @override
   void onInit() {
@@ -32,7 +35,7 @@ class HomeController extends GetxController {
 
   void initData() {
     handleClearData();
-    print("email_123: ${authController.user.value.email}");
+    _log.i("TYPE: Auth,\nDATA: ${authController.user.value.id}");
     update();
   }
 

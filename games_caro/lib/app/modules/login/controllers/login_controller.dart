@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/api.dart';
-import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/model/user_model.dart';
 import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:games_caro/app/routes/app_pages.dart';
@@ -15,6 +14,7 @@ class LoginController extends GetxController {
   final isLoadingLogin = false.obs;
   final listErrLogin = ["", ""].obs;
   final isSaveAccount = false.obs;
+  final isHidePass = false.obs;
 
   final _log = Logger();
   final AuthController authController = Get.find();
@@ -64,27 +64,23 @@ class LoginController extends GetxController {
   Future<void> submit() async {
     if (!validatorLogin) return;
 
-    await Utils.getDevice().then((value) async {
-      final form = {
-        "email": inputEmail.text,
-        "pass": inputPass.text,
-        "save_acc": isSaveAccount.value,
-        "device_mobi": value
-      };
-      isLoadingLogin.value = true;
-      final res = await api.post('$kUrl/login', data: form);
-      isLoadingLogin.value = false;
+    final _device = await Utils.getDevice();
+    final form = {
+      "email": inputEmail.text,
+      "pass": inputPass.text,
+      "save_acc": isSaveAccount.value,
+      "device_mobi": _device
+    };
+    isLoadingLogin.value = true;
+    final res = await api.post('/login', data: form);
+    isLoadingLogin.value = false;
 
-      if (res.statusCode == 200 && res.data['code'] == 0) {
-        authController.user.value = UserModel.fromJson(res.data['payload']);
-        Get.offAllNamed(Routes.HOME);
-      } else {
-        Utils.messError(res.data['message']);
-      }
-    }).catchError((err) {
-      _log.e('Device: $err');
-      Utils.messWarning(MSG_ERR_ADMIN);
-    });
+    if (res.statusCode == 200 && res.data['code'] == 0) {
+      authController.user.value = UserModel.fromJson(res.data['payload']);
+      Get.offAllNamed(Routes.HOME);
+    } else {
+      Utils.messError(res.data['message']);
+    }
   }
 
   void clearDataLogin() {

@@ -47,24 +47,20 @@ class ListAccountController extends GetxController
   }
 
   Future<void> getListAccount() async {
-    await Utils.getDevice().then((value) async {
-      final form = {'device': value};
+    final _device = await Utils.getDevice();
+    final form = {'device': _device};
 
-      isLoading.value = true;
-      final res = await api.get('$kUrl/list-account', queryParameters: form);
-      isLoading.value = false;
+    isLoading.value = true;
+    final res = await api.get('/list-account', queryParameters: form);
+    isLoading.value = false;
 
-      if (res.statusCode == 200 && res.data['code'] == 0) {
-        final convertList = res.data['payload'] as List;
-        listAccount.value =
-            convertList.map((data) => UserModel.fromJson(data)).toList();
-      } else {
-        Utils.messError(res.data['message']);
-      }
-    }).catchError((err) {
-      _log.e('Device: $err');
-      Utils.messWarning(MSG_ERR_ADMIN);
-    });
+    if (res.statusCode == 200 && res.data['code'] == 0) {
+      final convertList = res.data['payload'] as List;
+      listAccount.value =
+          convertList.map((data) => UserModel.fromJson(data)).toList();
+    } else {
+      Utils.messError(res.data['message']);
+    }
   }
 
   void showBottomSheet(UserModel user) {
@@ -111,7 +107,7 @@ class ListAccountController extends GetxController
     final form = {'id': id};
 
     isLoading(true);
-    final res = await api.delete('$kUrl/remove-account', data: form);
+    final res = await api.delete('/remove-account', data: form);
     isLoading(false);
     if (res.statusCode == 200 && res.data['code'] == 0) {
       getListAccount();

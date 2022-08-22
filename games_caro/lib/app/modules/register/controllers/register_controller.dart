@@ -151,7 +151,7 @@ class RegisterController extends GetxController {
       "nameGame": inputNameGame.text,
       "images": urlImage
     };
-    final res = await api.post('$kUrl/register', data: form);
+    final res = await api.post('/register', data: form);
     isLoading.value = false;
     if (res.statusCode == 200 && res.data['code'] == 0) {
       clearData();

@@ -42,28 +42,24 @@ class AuthController extends GetxController {
   }
 
   Future<void> checkDevice() async {
-    await Utils.getDevice().then((value) async {
-      final form = {"device_mobi": value};
-      final res = await api.get('$kUrl/check-device', queryParameters: form);
-      if (res.statusCode == 200 && res.data['code'] == 0) {
-        final totalDevice = res.data['payload']['total_device_login'];
-        final dataUser = res.data['payload']['data_user'];
-        if (![0, 1].contains(totalDevice)) {
-          Get.offNamed(Routes.LIST_ACCOUNT);
-        } else {
-          if (totalDevice == 1) user.value = UserModel.fromJson(dataUser);
-          if (totalDevice == 1 && user.value.saveAccount == '1') {
-            Get.offNamed(Routes.HOME);
-          } else {
-            Get.offNamed(Routes.LOGIN);
-          }
-        }
+    final _device = await Utils.getDevice();
+    final form = {"device_mobi": _device};
+    final res = await api.get('/check-device', queryParameters: form);
+    if (res.statusCode == 200 && res.data['code'] == 0) {
+      final totalDevice = res.data['payload']['total_device_login'];
+      final dataUser = res.data['payload']['data_user'];
+      if (![0, 1].contains(totalDevice)) {
+        Get.offNamed(Routes.LIST_ACCOUNT);
       } else {
-        Utils.messError(res.data['message']);
+        if (totalDevice == 1) user.value = UserModel.fromJson(dataUser);
+        if (totalDevice == 1 && user.value.saveAccount == '1') {
+          Get.offNamed(Routes.HOME);
+        } else {
+          Get.offNamed(Routes.LOGIN);
+        }
       }
-    }).catchError((err) {
-      _log.e('Device: $err');
-      Utils.messWarning(MSG_ERR_ADMIN);
-    });
+    } else {
+      Utils.messError(res.data['message']);
+    }
   }
 }
