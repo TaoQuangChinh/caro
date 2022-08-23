@@ -25,7 +25,7 @@ class CustomInput extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final bool obscureText;
-  final IconData? icons;
+  final Widget? icons;
   final Function()? onPressed;
 
   @override
@@ -43,7 +43,7 @@ class CustomInput extends StatelessWidget {
           keyboardType: keyboardType ?? TextInputType.visiblePassword,
           obscureText: obscureText,
           decoration: InputDecoration(
-              prefixIcon: IconButton(icon: Icon(icons), onPressed: onPressed),
+              suffixIcon: icons,
               counter: const SizedBox.shrink(),
               contentPadding: const EdgeInsets.symmetric(horizontal: 15),
               border: OutlineInputBorder(

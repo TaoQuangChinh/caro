@@ -11,6 +11,14 @@ import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
+
+  IconData showIcon(bool value) {
+    if (value) {
+      return Icons.visibility_off_outlined;
+    }
+    return Icons.visibility_outlined;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +43,11 @@ class LoginView extends GetView<LoginController> {
                     controller: controller.inputPass,
                     title: 'Mật khẩu',
                     obscureText: controller.isHidePass.value,
-                    icons: null,
+                    icons: IconButton(
+                        icon: Icon(showIcon(controller.isHidePass.value),
+                            color: kPrimaryColor),
+                        onPressed: () => controller
+                            .isHidePass(!controller.isHidePass.value)),
                     err: controller.listErrLogin[1],
                   )),
               Row(
