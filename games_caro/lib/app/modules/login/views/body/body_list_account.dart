@@ -64,7 +64,7 @@ class BodyListAccount extends StatelessWidget {
                           children: [
                             if (_.listAccount[index].images == null) ...[
                               CustomImageDefault(
-                                  content: _.listAccount[index].nameGame![0])
+                                  content: _.listAccount[index].userName![0])
                             ],
                             if (_.listAccount[index].images != null) ...[
                               CachedNetworkImage(
@@ -93,7 +93,7 @@ class BodyListAccount extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  _.listAccount[index].nameGame!,
+                                  _.listAccount[index].userName!,
                                   style: PrimaryStyle.bold(20),
                                 ),
                                 Text(_.listAccount[index].email!,

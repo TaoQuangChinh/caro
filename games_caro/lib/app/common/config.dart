@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 //192.168.0.104 (LN)
 const kUrl = 'http://192.168.19.91:8000/';
 
-const kPrimaryColor = Color(0xffff6f00);
+const kPrimaryColor = Color(0xff00695c);
 const kBodyText = Color(0xff707070);
 const kRedColor400 = Color(0xFFef5350);
 const kRedColor600 = Color(0xffe53935);
@@ -15,6 +15,7 @@ const kWhiteColor = Color(0xffffffff);
 const kBlueColor500 = Color(0xff2196f3);
 const kYellowColor800 = Color(0xfff9a825);
 const kGreenColor700 = Color(0xff689f38);
+const kOrangeColor800 = Color(0xffef6c00);
 
 // config message app
 const MSG_ERR_ADMIN = "Có một lỗi xảy ra, vui lòng liên hệ với admin.";

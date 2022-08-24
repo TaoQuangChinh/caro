@@ -28,10 +28,10 @@ class LoginView extends GetView<LoginController> {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              Image.asset('assets/images/logo_caro.png', height: 170),
+              Image.asset('assets/images/logo.png', height: 170),
               const SizedBox(height: 10),
-              Text("Caro Master",
-                  style: PrimaryStyle.bold(color: kPrimaryColor, 35)),
+              Text("Spending Management",
+                  style: PrimaryStyle.bold(color: kPrimaryColor, 27)),
               const SizedBox(height: 40),
               Obx(() => CustomInput(
                     controller: controller.inputEmail,

@@ -15,16 +15,18 @@ class CustomInput extends StatelessWidget {
       this.keyboardType,
       this.obscureText = false,
       this.onPressed,
-      this.icons})
+      this.icons,
+      this.readOnly = false,
+      this.hintText = ''})
       : super(key: key);
 
   final TextEditingController controller;
-  final String title, err;
+  final String title, err, hintText;
   final Color colorTitle;
   final int? maxLength;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
-  final bool obscureText;
+  final bool obscureText, readOnly;
   final Widget? icons;
   final Function()? onPressed;
 
@@ -33,8 +35,10 @@ class CustomInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: PrimaryStyle.medium(14, color: colorTitle)),
-        const SizedBox(height: 5),
+        if (title.isNotEmpty) ...[
+          Text(title, style: PrimaryStyle.medium(14, color: colorTitle)),
+          const SizedBox(height: 5)
+        ],
         TextField(
           controller: controller,
           style: PrimaryStyle.normal(color: kBodyText, 16),
@@ -42,7 +46,11 @@ class CustomInput extends StatelessWidget {
           inputFormatters: inputFormatters,
           keyboardType: keyboardType ?? TextInputType.visiblePassword,
           obscureText: obscureText,
+          readOnly: readOnly,
           decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle:
+                  PrimaryStyle.normal(color: kBodyText.withOpacity(0.5), 15),
               suffixIcon: icons,
               counter: const SizedBox.shrink(),
               contentPadding: const EdgeInsets.symmetric(horizontal: 15),

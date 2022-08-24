@@ -30,7 +30,7 @@ class ItemBottomSheet extends StatelessWidget {
             EdgeInsets.symmetric(vertical: paddingVertical, horizontal: 10),
         child: Row(
           children: [
-            Icon(icon, color: iconColor),
+            Icon(icon, color: iconColor, size: 20),
             const SizedBox(width: 10),
             Text(content, style: PrimaryStyle.normal(16, color: textColor))
           ],

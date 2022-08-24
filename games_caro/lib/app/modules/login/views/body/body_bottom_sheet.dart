@@ -37,7 +37,7 @@ class BodyBottomSheet extends StatelessWidget {
             onTap: changePass,
             paddingVertical: 10),
         ItemBottomSheet(
-            content: 'Xoá tài khoản(trên thiết bị này)',
+            content: 'Xoá tài khoản trên thiết bị này',
             icon: Icons.highlight_remove,
             textColor: kRedColor400,
             iconColor: kRedColor400,

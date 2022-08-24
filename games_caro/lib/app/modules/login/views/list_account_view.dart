@@ -16,7 +16,7 @@ class ListAccountView extends GetView<ListAccountController> {
       backgroundColor: kPrimaryColor,
       body: const BodyListAccount(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: kIndigoBlueColor900,
+        backgroundColor: kOrangeColor800,
         onPressed: () =>
             Get.toNamed(Routes.REGISTER, parameters: {'screen': 'listAccount'}),
         child: const Icon(Icons.edit, color: kWhiteColor, size: 27),

@@ -14,7 +14,7 @@ class LoginController extends GetxController {
   final isLoadingLogin = false.obs;
   final listErrLogin = ["", ""].obs;
   final isSaveAccount = false.obs;
-  final isHidePass = false.obs;
+  final isHidePass = true.obs;
 
   final _log = Logger();
   final AuthController authController = Get.find();

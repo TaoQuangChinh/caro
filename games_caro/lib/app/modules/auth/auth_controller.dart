@@ -51,8 +51,8 @@ class AuthController extends GetxController {
       if (![0, 1].contains(totalDevice)) {
         Get.offNamed(Routes.LIST_ACCOUNT);
       } else {
-        if (totalDevice == 1) user.value = UserModel.fromJson(dataUser);
-        if (totalDevice == 1 && user.value.saveAccount == '1') {
+        if (dataUser != null) {
+          user.value = UserModel.fromJson(dataUser);
           Get.offNamed(Routes.HOME);
         } else {
           Get.offNamed(Routes.LOGIN);

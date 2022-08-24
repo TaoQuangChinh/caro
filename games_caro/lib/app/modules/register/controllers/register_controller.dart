@@ -12,21 +12,20 @@ import 'package:games_caro/app/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:uuid/uuid.dart';
 
 class RegisterController extends GetxController {
   TextEditingController inputEmail = TextEditingController();
-  TextEditingController inputNameGame = TextEditingController();
+  TextEditingController inputCode = TextEditingController();
 
   final isLoadImage = false.obs;
   final isLoading = false.obs;
   final listError = ["", ""].obs;
-  final reg = '[a-zA-Z0-9]';
 
   final _log = Logger();
-  final uuid = Uuid();
   final fileImage = File("").obs;
   final AuthController authController = Get.find();
+
+  String? _urlImage;
 
   @override
   void onInit() {
@@ -41,18 +40,15 @@ class RegisterController extends GetxController {
   @override
   void onClose() {
     inputEmail.dispose();
-    inputNameGame.dispose();
+    inputCode.dispose();
     super.onClose();
   }
 
   bool validator() {
     var result = true;
     listError.value = ["", ""];
-    if (inputNameGame.text.trim().isEmpty) {
+    if (inputCode.text.trim().isEmpty) {
       listError[0] = "vui lòng không để trống thông tin";
-      result = false;
-    } else if (inputNameGame.text.length > 100) {
-      listError[0] = "nick name không quá 100 ký tự";
       result = false;
     }
     if (inputEmail.text.trim().isEmpty) {
@@ -68,18 +64,19 @@ class RegisterController extends GetxController {
 
   Future<void> submit() async {
     if (!validator()) return;
-    final uui = uuid.v4();
     isLoading.value = true;
     if (fileImage.value.path != '') {
-      await handleAddImageToStore(uui);
+      await handleAddImageToStore();
+      if (!['', null].contains(_urlImage)) await registerAccount();
     } else {
-      await registerAccount(uui);
+      await registerAccount();
     }
   }
 
   void clearData() {
     inputEmail.clear();
-    inputNameGame.clear();
+    inputCode.clear();
+    _urlImage = null;
     fileImage.value = File('');
     update();
   }
@@ -97,6 +94,7 @@ class RegisterController extends GetxController {
               pickerImage: () => handlePickerImage(ImageSource.gallery),
               removeAvatar: () {
                 Get.back();
+                _urlImage = null;
                 if (fileImage.value.path != '') fileImage.value = File('');
               });
         });
@@ -128,28 +126,25 @@ class RegisterController extends GetxController {
     update();
   }
 
-  Future<void> handleAddImageToStore(id) async {
-    Reference ref = authController.storage
-        .refFromURL('gs://app-caro-776ce.appspot.com/')
-        .child(id);
-    UploadTask task = ref.putFile(fileImage.value);
-    task.then((snapshot) {
-      snapshot.ref
-          .getDownloadURL()
-          .then((value) async => await registerAccount(id, urlImage: value));
-    }).catchError((err) {
+  Future<void> handleAddImageToStore() async {
+    try {
+      Reference ref = authController.storage
+          .refFromURL('gs://app-caro-776ce.appspot.com/')
+          .child(inputCode.text);
+      UploadTask task = ref.putFile(fileImage.value);
+      _urlImage = await task.snapshot.ref.getDownloadURL();
+    } catch (err) {
       isLoading.value = false;
       _log.e('Fire Store: $err');
       Utils.messWarning(MSG_SAVE_FILE);
-    });
+    }
   }
 
-  Future<void> registerAccount(id, {String urlImage = ''}) async {
+  Future<void> registerAccount() async {
     final form = {
-      "id": id,
+      "id": inputCode.text,
       "email": inputEmail.text,
-      "nameGame": inputNameGame.text,
-      "images": urlImage
+      "images": _urlImage
     };
     final res = await api.post('/register', data: form);
     isLoading.value = false;

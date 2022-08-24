@@ -13,7 +13,7 @@ class UserModel {
       {this.id,
       this.email,
       this.pass,
-      this.nameGame,
+      this.userName,
       this.deviceMobi,
       this.images,
       this.saveAccount});
@@ -21,7 +21,7 @@ class UserModel {
   String? id;
   String? email;
   String? pass;
-  String? nameGame;
+  String? userName;
   String? deviceMobi;
   String? images;
   String? saveAccount;
@@ -30,20 +30,20 @@ class UserModel {
       id: json["id"] == null ? null : json["id"],
       email: json["email"] == null ? null : json["email"],
       pass: json["pass"] == null ? null : json["pass"],
-      nameGame: json["nameGame"] == null ? null : json["nameGame"],
-      deviceMobi: json["deviceMobi"] == null ? null : json["deviceMobi"],
+      userName: json["user_name"] == null ? null : json["user_name"],
+      deviceMobi: json["device_mobi"] == null ? null : json["device_mobi"],
       images: json["images"] == null || json["images"] == ''
           ? null
           : json["images"],
-      saveAccount: json["saveAccount"] == null ? null : json["saveAccount"]);
+      saveAccount: json["save_account"] == null ? null : json["save_account"]);
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "email": email == null ? null : email,
         "pass": pass == null ? null : pass,
-        "nameGame": nameGame == null ? null : nameGame,
-        "deviceMobi": deviceMobi == null ? null : deviceMobi,
+        "user_name": userName == null ? null : userName,
+        "device_mobi": deviceMobi == null ? null : deviceMobi,
         "images": images == null ? null : images,
-        "saveAccount": saveAccount == null ? null : saveAccount
+        "save_account": saveAccount == null ? null : saveAccount
       };
 }

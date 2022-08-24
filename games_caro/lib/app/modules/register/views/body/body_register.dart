@@ -28,17 +28,25 @@ class BodyRegister extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            const SizedBox(height: 100),
+            const SizedBox(height: 50),
             showImage(),
             const SizedBox(height: 30),
             Obx(() => CustomInput(
-                  controller: controller.inputNameGame,
-                  title: 'Tên người chơi',
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(controller.reg))
-                  ],
+                  controller: controller.inputCode,
+                  title: 'Căn cước/chứng minh thư',
+                  keyboardType: TextInputType.number,
+                  maxLength: 12,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   err: controller.listError[0],
                 )),
+            const SizedBox(height: 10),
+            CustomInput(
+              readOnly: true,
+              controller: controller.inputEmail,
+              hintText: 'tên người dùng',
+              title: '',
+              err: '',
+            ),
             const SizedBox(height: 15),
             Obx(() => CustomInput(
                   controller: controller.inputEmail,
@@ -56,7 +64,7 @@ class BodyRegister extends StatelessWidget {
                 isLoading: controller.isLoading.value,
                 titleButton: "Đăng ký",
                 onPressed: () async => await controller.submit())),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
               child: FittedBox(

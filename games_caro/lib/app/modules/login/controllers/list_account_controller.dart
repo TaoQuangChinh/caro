@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:games_caro/app/common/api.dart';
-import 'package:games_caro/app/common/config.dart';
 import 'package:games_caro/app/model/user_model.dart';
 import 'package:games_caro/app/modules/auth/auth_controller.dart';
 import 'package:games_caro/app/modules/change_pass/controllers/change_pass_controller.dart';
@@ -74,7 +73,7 @@ class ListAccountController extends GetxController
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         context: Get.context!,
-        constraints: const BoxConstraints(maxHeight: 140),
+        constraints: const BoxConstraints(maxHeight: 130),
         builder: (context) {
           return BodyBottomSheet(
             removeAccount: () async {
@@ -108,10 +107,10 @@ class ListAccountController extends GetxController
 
     isLoading(true);
     final res = await api.delete('/remove-account', data: form);
-    isLoading(false);
     if (res.statusCode == 200 && res.data['code'] == 0) {
-      getListAccount();
-      Utils.messSuccess(res.data['message']);
+      await getListAccount();
+      if (listAccount.length != 1) Utils.messSuccess(res.data['message']);
+      if (listAccount.length == 1) Get.toNamed(Routes.LOGIN);
     } else {
       Utils.messError(res.data['message']);
     }

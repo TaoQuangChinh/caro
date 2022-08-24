@@ -40,11 +40,11 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
           alignment: Alignment.center,
           child: RotationTransition(
             turns: animation,
-            child: Image.asset('assets/images/logo_caro.png'),
+            child: Image.asset('assets/images/logo.png', height: 300),
           ),
         ),
         const SizedBox(height: 30),
-        Text("Chào mừng đến với Caro Master",
+        Text("Spending Management",
             textAlign: TextAlign.center,
             style: PrimaryStyle.bold(32, color: kPrimaryColor))
       ]),
